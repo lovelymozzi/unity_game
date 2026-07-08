@@ -5,10 +5,11 @@
   "description": "Hwi의 Unity 6 신규 프로젝트 파운데이션. v1.0.0: thin adopt/bootstrap — 검증 라이브러리(R3·Addler·USN·LucidAudio·DOTween)를 네이티브 API로 직접 채택하고, 파운데이션은 설치·초기화·컨벤션·스캐폴딩만 제공. 유지 모듈: Core + Pool + UI + Mobile + Async + Scene + Logging + Assets + Save + Localization + Input. (Audio/Events/Popup 폐기 — 각각 LucidAudio/R3/USN 직접.)",
   "unity": "6000.0",
   "author": { "name": "Hwijung Park", "email": "hwijung-park@linecorp.com" },
-  "keywords": ["foundation","mobile","object-pool","ui","safearea","orthographic","async","unitask","scene","logging","assets","addressables","save","localization","input","r3","dotween","unity-screen-navigator","lucid-audio","addler","bootstrap","convention"],
+  "keywords": ["foundation","mobile","object-pool","ui","safearea","orthographic","async","unitask","scene","logging","assets","addressables","save","localization","input","r3","dotween","unity-screen-navigator","lucid-audio","addler","bootstrap","convention","editor-exec","unity-exec"],
   "dependencies": {
     "com.unity.addressables": "2.9.1",
-    "com.unity.inputsystem": "1.19.0"
+    "com.unity.inputsystem": "1.19.0",
+    "com.unity.nuget.newtonsoft-json": "3.2.1"
   },
   "samples": [
     { "displayName": "01 Pool — 2D Bullet",       "description": "PrefabPool 2D 탄환 풀 데모",   "path": "Samples~/01_Pool_Bullet" },

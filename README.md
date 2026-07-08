@@ -110,6 +110,21 @@ CsvCSharp + NuGetForUnity 는 **v1.0.1 로 이월**(Unsafe 4중충돌·AOT 미�
 2. `Templates~/Scaffold/*.cs.txt` → `Assets/Scripts/` 로 복사 후 `.cs` 로 확장자 변경. 4계층(DataManager/Core-Manager/Controller-Object/UI-View) 시작 코드 + 샘플 CSV. 자세히 → `Templates~/Scaffold/README.md`.
 3. `Templates~/manifest.snippet.json`, `Templates~/link.xml` — 위 설치 계약 참조.
 
+## Editor Exec (번들 — AI 에이전트 Unity 조작)
+
+파운데이션에 **Unity Editor C# 실행 서버 + AI 스킬**이 번들돼 있다(`Editor/Exec/` + `Exec~/`). 별도 패키지 설치 없이 `com.hwi.foundation` 하나로 AI 에이전트(Claude Code 등)가 에디터를 조작·검증할 수 있다.
+
+- **자동 기동:** 에디터를 열면 exec HTTP 서버가 `[InitializeOnLoad]` 로 시작(베이스 포트 8090, 점유 시 폴백). 토큰 인증·화이트리스트·감사 로그 포함.
+- **AI 스킬 설치:** 소비 프로젝트 루트에서
+  ```bash
+  bash Packages/com.hwi.foundation/Exec~/bootstrap.sh "$PWD" --skip-manifest
+  ```
+  `.claude/skills/unity-editor-ops/` + `CLAUDE.md` 안내 블록 설치. `--skip-manifest` = exec 가 파운데이션에 번들이므로 manifest git 의존 추가 불필요.
+- **(1회·필수) Interaction Mode = No Throttling** (`Unity ▸ Settings ▸ General`) — 안 하면 exec 요청이 심하게 지연.
+- ⚠ **표준 `com.linestudio.unity-exec` 를 동시에 설치하지 말 것** — asmdef `UnityExec.Editor` 중복 → 컴파일 붕괴. 번들본만 사용.
+- 의존: `com.unity.nuget.newtonsoft-json`(package.json 에 선언됨).
+- 출처: LINE Studio `unity-exec-cli` @ `51c764b` 를 verbatim vendoring(원본 무수정). 재동기화 절차 → `Documentation~/VENDOR_UNITY_EXEC.md`.
+
 ## SpriteRenderer · Orthographic 규약
 
 모든 게임 오브젝트는 `SpriteRenderer`, 좌표/화면 크기는 MainCamera Orthographic Size 기반 동적 대응. 카메라에 `OrthographicCameraFitter` 부착 → 기준 월드 영역을 화면비에 맞춰 자동 fit(Fit/Envelope/FitWidth/FitHeight).
