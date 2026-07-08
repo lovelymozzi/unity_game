@@ -108,7 +108,12 @@ CsvCSharp + NuGetForUnity 는 **v1.0.1 로 이월**(Unsafe 4중충돌·AOT 미�
 
 `Templates~/` 는 Unity 가 무시하는(`~`) 폴더 — 컴파일 안 됨. 복사해서 사용:
 
-1. `cp Templates~/ProjectConventions.md <project>/CLAUDE.md` — 개발 환경·컨벤션·출력 요구사항(단일 출처).
+1. **한 명령 셋업(권장):**
+   ```bash
+   bash Packages/com.hwi.foundation/Tools~/foundation-setup.sh "$PWD"
+   ```
+   → `CLAUDE.md` 에 **[hwi-foundation 블록]**(개발환경·패키지 규칙·컨벤션·출력요구사항, `ProjectConventions.md` 기반) + **[unity-exec 블록]**(에디터 조작 스킬)을 각각 독립 마커로 멱등 주입 + `.claude/skills/unity-editor-ops/` 설치. 재실행/업스트림 재동기화 안전. (개별 제어: `--skip-exec` / `--skip-conventions`.)
+   - 수동 대안: `cp Templates~/ProjectConventions.md <project>/CLAUDE.md` (단일 출처를 직접 복사).
 2. `Templates~/Scaffold/*.cs.txt` → `Assets/Scripts/` 로 복사 후 `.cs` 로 확장자 변경. 4계층(DataManager/Core-Manager/Controller-Object/UI-View) 시작 코드 + 샘플 CSV. 자세히 → `Templates~/Scaffold/README.md`.
 3. `Templates~/manifest.snippet.json`, `Templates~/link.xml` — 위 설치 계약 참조.
 
@@ -117,11 +122,11 @@ CsvCSharp + NuGetForUnity 는 **v1.0.1 로 이월**(Unsafe 4중충돌·AOT 미�
 파운데이션에 **Unity Editor C# 실행 서버 + AI 스킬**이 번들돼 있다(`Editor/Exec/` + `Exec~/`). 별도 패키지 설치 없이 `com.hwi.foundation` 하나로 AI 에이전트(Claude Code 등)가 에디터를 조작·검증할 수 있다.
 
 - **자동 기동:** 에디터를 열면 exec HTTP 서버가 `[InitializeOnLoad]` 로 시작(베이스 포트 8090, 점유 시 폴백). 토큰 인증·화이트리스트·감사 로그 포함.
-- **AI 스킬 설치:** 소비 프로젝트 루트에서
+- **AI 스킬 설치:** `Tools~/foundation-setup.sh`(§신규 프로젝트 스캐폴드 1번)가 컨벤션 주입과 함께 자동 처리. exec 만 따로:
   ```bash
   bash Packages/com.hwi.foundation/Exec~/bootstrap.sh "$PWD" --skip-manifest
   ```
-  `.claude/skills/unity-editor-ops/` + `CLAUDE.md` 안내 블록 설치. `--skip-manifest` = exec 가 파운데이션에 번들이므로 manifest git 의존 추가 불필요.
+  `.claude/skills/unity-editor-ops/` + `CLAUDE.md` 의 `<!-- unity-exec-skill:* -->` 블록 설치. `--skip-manifest` = exec 가 파운데이션에 번들이므로 manifest git 의존 추가 불필요.
 - **(1회·필수) Interaction Mode = No Throttling** (`Unity ▸ Settings ▸ General`) — 안 하면 exec 요청이 심하게 지연.
 - ⚠ **표준 `com.linestudio.unity-exec` 를 동시에 설치하지 말 것** — asmdef `UnityExec.Editor` 중복 → 컴파일 붕괴. 번들본만 사용.
 - 의존: `com.unity.nuget.newtonsoft-json`(package.json 에 선언됨).

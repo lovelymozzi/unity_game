@@ -2,20 +2,23 @@
   HWI Foundation — 신규 프로젝트 컨벤션 템플릿 (INSTALL-TIME TEMPLATE)
 
   이 파일은 파운데이션 패키지가 강제하는 "개발 환경·기술 스택·코드 컨벤션·출력 요구사항"의
-  단일 출처(single source of truth)다. 신규 프로젝트 생성 시 이 파일을 프로젝트 루트의
-  CLAUDE.md(또는 docs/CONVENTIONS.md)로 복사하고, AI/팀원이 코드를 작성할 때 반드시 준수한다.
+  단일 출처(single source of truth)다. 신규 프로젝트 생성 시 이 내용을 프로젝트 루트의
+  CLAUDE.md 로 주입하고, AI/팀원이 코드를 작성할 때 반드시 준수한다.
 
-  복사: cp Packages/com.hwi.foundation/Templates~/ProjectConventions.md <project>/CLAUDE.md
-  (기존 CLAUDE.md가 있으면 이 내용을 append.)
+  자동 주입(권장): bash Packages/com.hwi.foundation/Tools~/foundation-setup.sh "$PWD"
+    → CLAUDE.md 의 <!-- hwi-foundation:start/end --> 블록에 이 내용을 멱등 삽입 + exec 스킬 설치.
+  수동: 아래 첫 헤딩(# 개발 환경)부터 끝까지를 CLAUDE.md 에 복사(기존 내용이 있으면 append).
+
+  ※ 아래 API 표기는 v1.0.0 에디터 실측(2026-07-08) 기준으로 확정됨.
 -->
 
 # 개발 환경 및 기술 스택
 
-1. **엔진 및 그래픽**: Unity 2D (최신 LTS 버전)
-   - 모든 게임 오브젝트는 `SpriteRenderer`를 사용하며, 좌표계 및 화면 크기는 `MainCamera`의 `Orthographic Size`를 기반으로 동적 대응되도록 합니다.
+1. **엔진 및 그래픽**: Unity 6 (실측 타깃 6000.3.16f1) · 2D
+   - 모든 게임 오브젝트는 `SpriteRenderer`를 사용하며, 좌표계 및 화면 크기는 `MainCamera`의 `Orthographic Size`를 기반으로 동적 대응합니다.
    - 오쏘그래픽 뷰포트 동적 대응은 파운데이션 `Foundation.UI.OrthographicCameraFitter`를 사용합니다.
 2. **UI 시스템**: `uGUI (Canvas)` + `Unity Screen Navigator`
-   - 화면 전환 및 팝업 관리는 `Unity Screen Navigator` 시스템(`Modal`, `Screen`)을 기반으로 작성해 주세요.
+   - 화면 전환 및 팝업 관리는 `Unity Screen Navigator`(`Page`, `Modal`, `Sheet`)를 기반으로 작성합니다. (‼ 베이스 클래스는 `Page`/`Modal` — `Screen` 아님. 네임스페이스 단수: `UnityScreenNavigator.Runtime.Core.Page` / `...Core.Modal`.)
    - 모든 텍스트 출력은 반드시 `TextMeshPro (TMP_Text)`를 사용합니다.
 
 # 프로젝트 탑재 주요 패키지 및 활용 규칙
@@ -23,20 +26,31 @@
 코드를 작성할 때 다음 패키지들의 API와 고유 설계 규칙을 반드시 준수해야 합니다.
 
 1. **비동기 처리 (`UniTask`)**:
-   - `Coroutine`이나 `async/await`(Task) 대신 `UniTask` / `UniTaskVoid`를 기본 비동기 패턴으로 사용해 주세요.
+   - `Coroutine`이나 `async/await`(Task) 대신 `UniTask` / `UniTaskVoid`를 기본 비동기 패턴으로 사용합니다.
 2. **에셋 및 메모리 관리 (`Addressables` + `Addler`)**:
    - 모든 프리팹, 사운드, 데이터 에셋은 Addressable 시스템 기반으로 비동기 로드합니다.
-   - Addressable 에셋의 생명주기 관리 및 자동 해제(Release)를 위해 `Addler` 패키지(예: `.DisposeWith()`, `Addressables.LoadAssetAsync().ToUniTask()`)를 활용하는 구조로 작성해 주세요.
+   - 에셋 수명 관리/자동 해제(Release)는 `Addler`로: `Addressables.LoadAssetAsync<T>(key).BindTo(gameObject).ToUniTask()`.
+     - ‼ 확장 메서드는 **`.BindTo(handle, GameObject)`** 입니다(`.DisposeWith()` 아님 — 실측). 핸들을 반환하므로 체인 가능. 네임스페이스 `Addler.Runtime.Core.LifetimeBinding`.
+     - **하드 선행조건:** `AddressableAssetSettings` + 최소 1개 그룹 + 주소 지정(없으면 진입점 전부 `InvalidKeyException`).
 3. **이벤트 및 반응형 처리 (`R3`)**:
-   - 상태 변화, UI 갱신, 글로벌 이벤트 발행 및 구독은 `R3` (Reactive Extensions for Unity)를 사용해 주세요. (`Observable`, `ReactiveProperty` 활용)
+   - 상태 변화, UI 갱신, 글로벌 이벤트 발행/구독은 `R3`를 사용합니다(`Observable`, `ReactiveProperty`, `Subject`). 상태 소유자는 1곳, UI는 구독만(단방향). 구독은 `.AddTo(...)`로 수명 바인딩.
+   - WebGL: 최소 표면만(`Subject`/`Subscribe`/`AsObservable`). `Interval`/`Delay`/`ObserveOn`/`ThreadPool` 금지. TimeProvider 교정은 R3.Unity가 담당.
 4. **애니메이션 및 모션 (`DOTween`)**:
-   - UI 페이드, 오브젝트 이동, 스케일 연출 등 모든 모션은 코루틴 대신 `DOTween` API를 연동하여 작성해 주세요.
-5. **사운드 관리 (`Lucid Audio`)**:
-   - BGM, SFX 등의 오디오 재생 로직은 `LucidAudio` API를 사용하여 제어해 주세요.
-6. **데이터 관리 (`CsvHelper` / CsvCSharp via NuGet)**:
-   - 게임 내 밸런스 데이터 및 정적 데이터는 외부 CSV 파일 구조로 분리합니다.
-   - CSV 데이터를 파싱하고, 게임 시작 시점에 메모리에 로드(`UniTask` 활용)하여 캐싱하는 데이터 매니저 구조를 포함해 주세요.
-   - **주의(파운데이션 v1.0.0):** CsvCSharp/NuGetForUnity는 v1.0.1로 이월됨(Unsafe 충돌·AOT 미증명·사용처 0). v1.0.0에서는 경량 `CsvTable` 리더(`Templates~/Scaffold/CsvTable.cs.txt`)로 시작하고, 두 실빌드(WebGL+Android IL2CPP) green 후 CsvCSharp `[CsvObject]` + `CsvSerializer.Deserialize`로 교체합니다.
+   - UI 페이드, 오브젝트 이동, 스케일 연출 등 모든 모션은 코루틴 대신 `DOTween` API로 작성합니다.
+   - 일시정지/모달 위(timeScale=0) 경로는 `.SetUpdate(true)`(unscaled) + `Ease.Linear` 강제(freeze 회피). AOT: `DOTween.To`는 float/Color/Vector만(그 외 IL2CPP `ExecutionEngineException`).
+5. **사운드 관리 (`LucidAudio`)**:
+   - BGM/SFX 재생은 `LucidAudio` API로 제어합니다. 네임스페이스 `AnnulusGames.LucidTools.Audio`.
+   - `AudioType`가 `UnityEngine.AudioType`와 CS0104 충돌 → alias/full-qualify. `SetAudioMixerGroup(...)`은 재생마다 재적용(Init 재사용 시 null 리셋).
+6. **데이터 관리 (외부 CSV → DataManager)**:
+   - 게임 내 밸런스/정적 데이터는 외부 CSV 파일로 분리하고, 게임 시작 시점에 `UniTask`로 비동기 로드하여 메모리에 캐싱하는 DataManager 구조를 포함합니다.
+   - **v1.0.0:** 경량 순수 C# 리더 `CsvTable`(`Templates~/Scaffold/CsvTable.cs.txt`) 사용 — 런타임 리플렉션/소스젠 없음 → IL2CPP/WebGL 안전.
+   - **v1.0.1(이월):** `CsvCSharp`(소스젠, `[CsvObject]` + `CsvSerializer.Deserialize`) via NuGetForUnity 로 교체(파일 인터페이스 동일 유지). CsvHelper는 채택 안 함(AOT/에디터-only 제약).
+
+## 패키지 설치 시 필수 define & 함정 (v1.0.0 실측)
+
+- **`USN_USE_ASYNC_METHODS`** (전 타깃 define, 필수): USN 라이프사이클을 `Task` 반환으로 전환(미설정 시 `IEnumerator` 코루틴). 뷰 오버라이드는 `public override async Task Initialize()`; 진입 애니메이션은 await 가능한 `WillPushEnter`(Task)에서 — `DidPushEnter`는 `void`(동기). async Task 본문에서 UniTask(`.ToUniTask()`)를 await할 수 있음.
+- **`UNITASK_DOTWEEN_SUPPORT`** (전 타깃 define, 필수): DOTween(raw DLL)은 UniTask versionDefine 자동감지가 안 되므로 이 define로 `Tween.ToUniTask()` 확장을 켬.
+- **Assembly Version Validation = OFF** / **WebGL managedStrippingLevel = High(3)** / **link.xml append**(덮어쓰기 금지). 자세히 → `Documentation~/M0_EDITOR_KICKOFF.md`.
 
 # 코드 가이드라인 및 컨벤션
 
@@ -44,32 +58,30 @@
    - 클래스, 메서드, public 변수, 프로퍼티: `PascalCase`
    - private / protected 변수: `_camelCase` (언더스코어 접두사 필수)
 2. **최적화 규칙**:
-   - `Update` 메서드 내에서의 `GetComponent`나 `Find` 연산은 금지하며, 초기화 시점에 캐싱해야 합니다.
-   - 자주 생성/삭제되는 오브젝트는 `UnityEngine.Pool.ObjectPool`과 `UniTask`를 연계한 풀링 구조를 취합니다.
+   - `Update` 내 `GetComponent`/`Find` 금지 — 초기화 시점(Awake)에 캐싱.
+   - 자주 생성/삭제되는 오브젝트는 `UnityEngine.Pool.ObjectPool` + `UniTask` 풀링.
 
 # 출력 요구사항 (변환/신규 구현 시)
 
 1. **스크립트 아키텍처 및 패키지 연동 설계**:
-   - 필요한 스크립트 목록과 각각의 역할, 그리고 어떤 패키지(R3, Addler, UniTask 등)를 사용하는지 요약한 테이블/리스트를 먼저 제공.
+   - 필요한 스크립트 목록·각 역할·사용 패키지(R3, Addler, UniTask 등)를 요약한 테이블/리스트를 먼저 제공.
 2. **완전한 C# 소스 코드 제공**:
    - 유니티에서 에러 없이 컴파일 가능한 완성 코드(생략 코드 `// 생략...` 지양).
    - 역할에 따라 분리:
-     - **DataManager**: CSV 데이터 파싱(v1.0.0=경량 `CsvTable`, v1.0.1=CsvCSharp) 및 제공 로직
-     - **Core/Manager**: 게임 흐름 제어, `R3`를 활용한 이벤트/상태 관리, `Addler` 기반 에셋 로더
-     - **Controller/Object**: 개별 오브젝트의 이동·충돌, `DOTween` 연출, `UnityEngine.Pool` 풀링
-     - **UI/View**: `Unity Screen Navigator` 및 `TMP` 연동 UI 뷰 로직
+     - **DataManager**: CSV 파싱(v1.0.0=경량 `CsvTable`, v1.0.1=CsvCSharp) 및 제공 로직
+     - **Core/Manager**: 게임 흐름 제어, `R3` 이벤트/상태 관리, `Addler` 기반 에셋 로더
+     - **Controller/Object**: 오브젝트 이동·충돌, `DOTween` 연출, `UnityEngine.Pool` 풀링
+     - **UI/View**: `Unity Screen Navigator`(`Page`/`Modal`) + `TMP` 연동 UI 뷰 로직
 
 ---
 
 ## 4계층 스캐폴드 (파운데이션 제공)
 
-`Templates~/Scaffold/` 아래에 계층별 시작 코드가 있습니다. 새 프로젝트에서 복사 후 `.cs.txt` → `.cs`로 확장자를 바꿔 사용하세요.
+`Templates~/Scaffold/` 아래 계층별 시작 코드가 있습니다. 복사 후 `.cs.txt` → `.cs`로 확장자를 바꿔 사용하세요. (v1.0.0 에디터 실측으로 API 확정 — 컴파일 green.)
 
 | 계층 | 스캐폴드 파일 | 사용 패키지 |
 |---|---|---|
 | DataManager | `CsvTable.cs.txt`, `DataManager.cs.txt` | 경량 CSV(v1.0.0) → CsvCSharp(v1.0.1) + UniTask |
 | Core/Manager | `GameManager.cs.txt`, `FoundationBootstrap.cs.txt` | R3 + Addler + UniTask + Addressables |
 | Controller/Object | `EnemyActor.cs.txt` | DOTween + SpriteRenderer + `UnityEngine.Pool` + UniTask |
-| UI/View | `MainScreen.cs.txt`, `ConfirmModal.cs.txt` | Unity Screen Navigator + TMP + DOTween |
-
-> 스캐폴드의 `⚠ VERIFY` 주석은 라이브러리 API명/시그니처가 에디터 실측 전(플랜 §12/§16.3)이라는 표시입니다. M0 에디터 기동 후 실 API로 확정하세요.
+| UI/View | `MainScreen.cs.txt`, `ConfirmModal.cs.txt`, `ModalHost.cs.txt` | Unity Screen Navigator + TMP + DOTween |
