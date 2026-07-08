@@ -9,7 +9,8 @@
   "dependencies": {
     "com.unity.addressables": "2.9.1",
     "com.unity.inputsystem": "1.19.0",
-    "com.unity.nuget.newtonsoft-json": "3.2.1"
+    "com.unity.nuget.newtonsoft-json": "3.2.1",
+    "com.unity.2d.sprite": "1.0.0"
   },
   "samples": [
     { "displayName": "01 Pool — 2D Bullet",       "description": "PrefabPool 2D 탄환 풀 데모",   "path": "Samples~/01_Pool_Bullet" },

@@ -112,7 +112,7 @@ CsvCSharp + NuGetForUnity 는 **v1.0.1 로 이월**(Unsafe 4중충돌·AOT 미�
    ```bash
    bash Packages/com.hwi.foundation/Tools~/foundation-setup.sh "$PWD"
    ```
-   → `CLAUDE.md` 에 **[hwi-foundation 블록]**(개발환경·패키지 규칙·컨벤션·출력요구사항, `ProjectConventions.md` 기반) + **[unity-exec 블록]**(에디터 조작 스킬)을 각각 독립 마커로 멱등 주입 + `.claude/skills/unity-editor-ops/` 설치. 재실행/업스트림 재동기화 안전. (개별 제어: `--skip-exec` / `--skip-conventions`.)
+   → `CLAUDE.md` 에 **[hwi-foundation 블록]**(개발환경·패키지 규칙·컨벤션·출력요구사항, `ProjectConventions.md` 기반) + **[unity-exec 블록]**을 각각 독립 마커로 멱등 주입 + `.claude/skills/` 에 스킬 3종(`unity-editor-ops`·`playtest`·`unity-ai-image-gen`) 설치. 재실행/재동기화 안전. (개별 제어: `--skip-exec` / `--skip-conventions` / `--skip-skills`.)
    - 수동 대안: `cp Templates~/ProjectConventions.md <project>/CLAUDE.md` (단일 출처를 직접 복사).
 2. `Templates~/Scaffold/*.cs.txt` → `Assets/Scripts/` 로 복사 후 `.cs` 로 확장자 변경. 4계층(DataManager/Core-Manager/Controller-Object/UI-View) 시작 코드 + 샘플 CSV. 자세히 → `Templates~/Scaffold/README.md`.
 3. `Templates~/manifest.snippet.json`, `Templates~/link.xml` — 위 설치 계약 참조.
@@ -131,6 +131,18 @@ CsvCSharp + NuGetForUnity 는 **v1.0.1 로 이월**(Unsafe 4중충돌·AOT 미�
 - ⚠ **표준 `com.linestudio.unity-exec` 를 동시에 설치하지 말 것** — asmdef `UnityExec.Editor` 중복 → 컴파일 붕괴. 번들본만 사용.
 - 의존: `com.unity.nuget.newtonsoft-json`(package.json 에 선언됨).
 - 출처: LINE Studio `unity-exec-cli` @ `51c764b` 를 verbatim vendoring(원본 무수정). 재동기화 절차 → `Documentation~/VENDOR_UNITY_EXEC.md`.
+
+## 번들 AI 스킬 (unity-exec 위에서 동작)
+
+`Tools~/foundation-setup.sh` 가 `.claude/skills/` 에 함께 설치하는 스킬(전부 번들 exec 재사용):
+
+| 스킬 | 용도 | opt-in 전제 |
+|---|---|---|
+| `unity-editor-ops` | exec C# 실행/컴파일 검증(전송수단) | — |
+| `playtest` | 좌표 기반 uGUI Play Mode 테스트 + 검증 리포트 | `annotate.py` 는 Python3 + Pillow(`pip install Pillow`). 비-uGUI 월드 입력은 게임별 어댑터(스킬 문서의 일반 패턴). |
+| `unity-ai-image-gen` | Unity AI(내장 Generators)로 이미지/스프라이트/오디오/애니 생성 | **Unity AI Generators**(`com.unity.ai.assistant` 내장) + AI 약관 동의 · Unity Cloud 링크 · 포인트. 하네스 `AiGenProbe` 는 패키지 `Editor/AiGenProbe/` 번들(‼ `com.unity.2d.sprite` 의존 — package.json 선언됨). |
+
+> playtest/unity-ai-image-gen 은 ShootGame 특화부를 제거한 **일반화 버전**이다. 원본은 `com.linestudio.unity-exec` 전송수단 가정이었으나 여기선 파운데이션 번들 exec 를 쓴다.
 
 ## SpriteRenderer · Orthographic 규약
 

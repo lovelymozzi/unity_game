@@ -1,0 +1,10 @@
+{
+    "name": "AiGenProbe.Editor",
+    "references": [
+        "Unity.2D.Sprite.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "autoReferenced": false
+}

@@ -19,10 +19,12 @@ PROJECT_DIR="${1:-$PWD}"
 case "${1:-}" in --*) PROJECT_DIR="$PWD" ;; esac
 SKIP_EXEC=false
 SKIP_CONVENTIONS=false
+SKIP_SKILLS=false
 for a in "$@"; do
   case "$a" in
     --skip-exec) SKIP_EXEC=true ;;
     --skip-conventions) SKIP_CONVENTIONS=true ;;
+    --skip-skills) SKIP_SKILLS=true ;;
   esac
 done
 
@@ -90,4 +92,27 @@ else
   log "skip exec (--skip-exec)"
 fi
 
-log "done. CLAUDE.md = [hwi-foundation 블록] + [unity-exec 블록]."
+# --- 추가 스킬 설치 (unity-ai-image-gen, playtest) ---
+install_skills() {
+  local src_root="$PKG_DIR/Skills~"
+  [[ -d "$src_root" ]] || { log "Skills~ 없음 — 추가 스킬 생략"; return; }
+  local dest_root="$PROJECT_DIR/.claude/skills"
+  mkdir -p "$dest_root"
+  local sk
+  for sk in "$src_root"/*/; do
+    [[ -d "$sk" ]] || continue
+    local name; name="$(basename "$sk")"
+    rm -rf "$dest_root/$name"
+    cp -R "$sk" "$dest_root/$name"
+    chmod +x "$dest_root/$name/scripts/"*.sh 2>/dev/null || true
+    log "installed skill: $name"
+  done
+}
+
+if [[ "$SKIP_SKILLS" == "false" ]]; then
+  install_skills
+else
+  log "skip skills (--skip-skills)"
+fi
+
+log "done. CLAUDE.md = [hwi-foundation 블록] + [unity-exec 블록]. skills = unity-editor-ops + unity-ai-image-gen + playtest."
