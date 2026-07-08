@@ -12,10 +12,10 @@ v1.0.0 은 **검증 라이브러리로 현대화**한 기준선이다. 파운데
 |---|---|
 | 비동기 | UniTask / UniTaskVoid (Coroutine·Task 지양) |
 | 이벤트·반응형 | **R3** (Observable / ReactiveProperty) |
-| 에셋 수명 | **Addressables + Addler** (`.DisposeWith()`) |
+| 에셋 수명 | **Addressables + Addler** (`.BindTo(gameObject)`) |
 | 모션 | **DOTween** (모든 페이드·이동·스케일) |
 | 오디오 | **LucidAudio** (BGM/SFX) |
-| 화면·모달 | **Unity Screen Navigator** (Screen / Modal) + TMP |
+| 화면·모달 | **Unity Screen Navigator** (Page / Modal) + TMP |
 | 데이터 | 외부 CSV — 경량 `CsvTable`(v1.0.0) → CsvCSharp(v1.0.1) |
 | 풀링 | `UnityEngine.Pool.ObjectPool` + UniTask |
 
@@ -78,11 +78,13 @@ Asset Store free core import → **Tools ▸ Demigiant ▸ DOTween Utility Panel
 ### 3. Player Settings (커밋)
 - **Assembly Version Validation = OFF** — 안 하면 R3 TimeProvider 8.0.0 이 IL2CPP `FileLoadException`.
 - **Scripting Define Symbols — 전 타깃 그룹**(Standalone/WebGL/**Android/iOS**):
-  - `EXCLUDE_COMPILER_SERVICES_UNSAFE` — `System.Runtime.CompilerServices.Unsafe` 이미 존재(Burst/AI Assistant/Collections). 재반입 시 *"Multiple precompiled assemblies with the same name"* → 에디터 전체 컴파일 붕괴. (Assembly Version Validation OFF 로는 해결 안 됨 — 동일 파일명 문제.)
+  - `USN_USE_ASYNC_METHODS` — **필수**. USN 라이프사이클을 `Task` 반환으로 전환(미설정 시 `IEnumerator` 코루틴). (2026-07-08 실측)
+  - `UNITASK_DOTWEEN_SUPPORT` — **필수**. DOTween(raw DLL)은 UniTask versionDefine 자동감지가 안 돼 `Tween.ToUniTask()` 확장을 이 define 로 켠다. (2026-07-08 실측)
+  - `EXCLUDE_COMPILER_SERVICES_UNSAFE` — **클린 신규 프로젝트엔 불필요**(2026-07-08 실측: Unsafe 1벌). Burst/AI Assistant/Collections 로 `System.Runtime.CompilerServices.Unsafe` 가 중복되는 기존 프로젝트(예: ShootGame 임베드)에서만: 재반입 *"Multiple precompiled assemblies with the same name"* → 컴파일 붕괴 회피용(Assembly Version Validation OFF 로는 해결 안 됨 — 동일 파일명).
 - **WebGL managedStrippingLevel = High(3)**, `stripEngineCode = 1`.
 
 ### 4. `link.xml` (append, 덮어쓰기 금지)
-`Templates~/link.xml` 항목을 **기존 link.xml 에 추가**. 기존 `Unity.InputSystem`·`Unity.TextMeshPro` preserve 를 덮으면 재스트립 → WebGL 런타임 붕괴. 어셈블리명은 각 라이브러리 import 후 실측(§16.3): Addler=`Addler`, DOTween=`DOTween.Modules`, USN=`UnityScreenNavigator`, LucidAudio=`AnnulusGames.LucidAudio.Runtime`, R3=`R3`/`R3.Unity`/`Microsoft.Bcl.TimeProvider`.
+`Templates~/link.xml` 항목을 **기존 link.xml 에 추가**. 기존 `Unity.InputSystem`·`Unity.TextMeshPro` preserve 를 덮으면 재스트립 → WebGL 런타임 붕괴. 어셈블리명 실측(2026-07-08): Addler=`Addler`, USN=`UnityScreenNavigator`, LucidAudio=`AnnulusGames.LucidAudio.Runtime`, R3=`R3`/`R3.Unity`/`Microsoft.Bcl.TimeProvider`, **DOTween=`DOTween`(코어 DLL)** — §2 의 Create ASMDEF 경로를 쓰면 `DOTween.Modules` 도 함께 preserve.
 
 ### 5. asmdef 배선
 26 named asmdef 는 autoReferenced 를 상속하지 않는다. 소비 게임 asmdef 마다 `Foundation.*` + 채택 라이브러리 어셈블리를 **명시 참조**.
@@ -97,9 +99,9 @@ CsvCSharp + NuGetForUnity 는 **v1.0.1 로 이월**(Unsafe 4중충돌·AOT 미�
 파운데이션은 아래 규약만 강제하고, 코드는 네이티브 API 직접 사용.
 
 - **R3** — 상태=`ReactiveProperty`, 이벤트=`Subject`, 구독은 `.AddTo(...)` 로 수명 바인딩. WebGL 은 최소 표면(Subject/Subscribe/AsObservable); `Interval`/`Delay`/`ObserveOn`/`ThreadPool` 금지. provider 초기화는 R3.Unity 가 담당(부트스트랩에서 assert).
-- **Addler** — `Addressables.LoadAssetAsync<T>(key).ToUniTask()` + `.DisposeWith(gameObject/token)`. **하드 선행조건: `AddressableAssetSettings` + 최소 1그룹 + 주소 지정**(없으면 진입점 전부 `InvalidKeyException`).
+- **Addler** — `Addressables.LoadAssetAsync<T>(key).BindTo(gameObject).ToUniTask()` (‼ 실측: `BindTo(handle, GameObject)` — `DisposeWith` 아님. 핸들 반환 체인, ns `Addler.Runtime.Core.LifetimeBinding`). **하드 선행조건: `AddressableAssetSettings` + 최소 1그룹 + 주소 지정**(없으면 진입점 전부 `InvalidKeyException`).
 - **DOTween** — 컴포넌트 shortcut(`DOMove`/`DOScale`/`DOFade`) 위주. 팝업/Pause 경로는 `.SetUpdate(true)` + `Ease.Linear` 강제(timeScale=0 freeze 회피). `DOTween.To` 는 float/Color/Vector 만(그 외 IL2CPP ExecutionEngineException).
-- **USN** — `Screen`/`Modal` 직접, 네비게이션 결과는 `AsyncProcessHandle.Task.AsUniTask()`. Popup 폐기.
+- **USN** — 베이스 `Page`/`Modal`(‼ `Screen` 아님, ns 단수 `...Core.Page`/`...Core.Modal`). 라이프사이클 `Task` 반환(define `USN_USE_ASYNC_METHODS`; async Task 본문에서 UniTask await 가능). 네비게이션 결과 = `AsyncProcessHandle.Task.AsUniTask()`. Popup 폐기.
 - **LucidAudio** — namespace `AnnulusGames.LucidTools.Audio`. `SetAudioMixerGroup(...)` 매 재생 재적용(Init 재사용 시 null 리셋). `AudioType{BGM,SE}` 는 `UnityEngine.AudioType` 와 CS0104 충돌 → full-qualify.
 
 ## 신규 프로젝트 스캐폴드
