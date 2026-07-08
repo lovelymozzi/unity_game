@@ -1,0 +1,13 @@
+{
+  "name": "Foundation.Save",
+  "rootNamespace": "Hwi.Foundation.Save",
+  "references": ["Foundation.Core", "Foundation.Async", "UniTask"],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

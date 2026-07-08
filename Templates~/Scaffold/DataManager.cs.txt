@@ -1,0 +1,87 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// DataManager 계층 — CSV 정적/밸런스 데이터 파싱·캐싱 (HWI Foundation v1.0.0)
+// 패키지: 경량 CsvTable(v1.0.0) → CsvCSharp(v1.0.1) · Addressables · Addler · UniTask
+//
+// 규칙: 게임 시작 시점에 UniTask 로 비동기 로드 → 메모리 캐싱. Addressable TextAsset 로 CSV 를 로드하고
+//       Addler .DisposeWith() 로 핸들 수명을 대상에 바인딩. 런타임 파싱은 CsvTable(리플렉션/소스젠 없음).
+// 복사 후 확장자를 .cs 로 변경.
+// ─────────────────────────────────────────────────────────────────────────────
+using System.Collections.Generic;
+using System.Globalization;
+using System.Threading;
+using Cysharp.Threading.Tasks;
+using UnityEngine;
+using UnityEngine.AddressableAssets;
+using Addler.Runtime.Core.LifetimeBinding; // ⚠ VERIFY: Addler .DisposeWith() 네임스페이스 (플랜 §6.3/§16.3, 어셈블리명 "Addler")
+
+namespace Game.Data
+{
+    /// <summary>밸런스 데이터 한 행(예: 유닛 스탯). CSV 컬럼과 1:1.</summary>
+    public readonly struct UnitStat
+    {
+        public readonly int Id;
+        public readonly string Name;
+        public readonly int Hp;
+        public readonly float MoveSpeed;
+
+        public UnitStat(int id, string name, int hp, float moveSpeed)
+        {
+            Id = id; Name = name; Hp = hp; MoveSpeed = moveSpeed;
+        }
+    }
+
+    /// <summary>
+    /// 정적 데이터 로드/캐시 매니저. 게임 부팅 시 <see cref="LoadAllAsync"/> 1회 호출.
+    /// Addressables 주소 = CSV 에셋 주소. 캐시는 Id → 행 Dictionary.
+    /// </summary>
+    public sealed class DataManager
+    {
+        public static DataManager Instance { get; } = new DataManager();
+
+        private readonly Dictionary<int, UnitStat> _unitStats = new();
+        public bool IsLoaded { get; private set; }
+
+        private DataManager() { }
+
+        /// <summary>모든 테이블을 병렬 로드 후 캐싱. <paramref name="lifetimeOwner"/> 파괴 시 에셋 핸들 자동 해제.</summary>
+        public async UniTask LoadAllAsync(GameObject lifetimeOwner, CancellationToken ct = default)
+        {
+            await UniTask.WhenAll(
+                LoadUnitStatsAsync("Data/UnitStats.csv", lifetimeOwner, ct)
+                // 테이블 추가 시 여기에 병렬로 나열
+            );
+            IsLoaded = true;
+        }
+
+        public bool TryGetUnitStat(int id, out UnitStat stat) => _unitStats.TryGetValue(id, out stat);
+
+        public IReadOnlyCollection<UnitStat> AllUnitStats => _unitStats.Values;
+
+        private async UniTask LoadUnitStatsAsync(string address, GameObject lifetimeOwner, CancellationToken ct)
+        {
+            // Addressable TextAsset 비동기 로드 + Addler 로 수명 바인딩(대상 파괴 시 Release).
+            var handle = Addressables.LoadAssetAsync<TextAsset>(address);
+            handle.DisposeWith(lifetimeOwner); // ⚠ VERIFY: Addler 확장 시그니처
+            var asset = await handle.ToUniTask(cancellationToken: ct);
+
+            var table = CsvTable.Parse(asset.text);
+            _unitStats.Clear();
+            for (int r = 0; r < table.RowCount; r++)
+            {
+                int id = ParseInt(table.Get(r, "id"));
+                var stat = new UnitStat(
+                    id,
+                    table.Get(r, "name"),
+                    ParseInt(table.Get(r, "hp")),
+                    ParseFloat(table.Get(r, "moveSpeed")));
+                _unitStats[id] = stat;
+            }
+        }
+
+        private static int ParseInt(string s) =>
+            int.TryParse(s, NumberStyles.Integer, CultureInfo.InvariantCulture, out var v) ? v : 0;
+
+        private static float ParseFloat(string s) =>
+            float.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out var v) ? v : 0f;
+    }
+}

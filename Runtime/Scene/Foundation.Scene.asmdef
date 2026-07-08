@@ -1,0 +1,13 @@
+{
+  "name": "Foundation.Scene",
+  "rootNamespace": "Hwi.Foundation.Scene",
+  "references": ["Foundation.Core","UniTask"],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

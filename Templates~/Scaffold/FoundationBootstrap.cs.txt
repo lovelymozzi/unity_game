@@ -1,0 +1,81 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// Core/Manager 계층 — 부팅 초기화 (HWI Foundation v1.0.0)
+// 패키지: Foundation(Core/Mobile/Logging) · R3 · Addressables · Addler · LucidAudio · UniTask
+//
+// 파운데이션은 "부트스트랩이 소유"하는 초기화 규약을 여기서 한곳에 모은다(플랜 §2.2):
+//   1) Foundation Logger 지정        2) MobileBootstrap 적용(프레임/슬립/VSync)
+//   3) R3 provider 초기화 보장(WebGL) 4) Addressables 카탈로그 초기화
+//   5) LucidAudio 믹서 그룹 규약
+// 복사 후 확장자를 .cs 로 변경.
+// ─────────────────────────────────────────────────────────────────────────────
+using Cysharp.Threading.Tasks;
+using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.Audio;
+using Hwi.Foundation.Core;
+using Hwi.Foundation.Logging;
+using Hwi.Foundation.Mobile;
+using R3;                       // ⚠ VERIFY: com.cysharp.r3 (플랜 §6.2, autoReferenced 여부 §12)
+
+namespace Game.Core
+{
+    public static class FoundationBootstrap
+    {
+        /// <summary>LucidAudio 재생 시 매번 재적용할 믹서 그룹(§6.4: Init 재사용 시 null 리셋 방지).</summary>
+        public static AudioMixerGroup BgmMixerGroup { get; private set; }
+        public static AudioMixerGroup SeMixerGroup { get; private set; }
+
+        // 씬 로드 전 동기 초기화 — GetComponent/Find 없이 순수 설정만.
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        private static void OnBeforeSceneLoad()
+        {
+            FoundationContext.Logger = new UnityDebugFoundationLogger();
+            MobileBootstrap.Apply(); // 프레임레이트/슬립/VSync (모바일 기본값)
+            AssertR3Provider();
+        }
+
+        // 첫 씬 로드 후 비동기 초기화 — Addressables/오디오.
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+        private static void OnAfterSceneLoad()
+        {
+            InitAsync().Forget();
+        }
+
+        private static async UniTaskVoid InitAsync()
+        {
+            // Addressables 카탈로그 초기화 — 이후 모든 Addler 진입점의 하드 선행조건(§6.3).
+            await Addressables.InitializeAsync().ToUniTask();
+
+            // 믹서 그룹 로드(주소는 프로젝트 규약). 실패해도 오디오는 마스터로 재생.
+            LoadMixerGroups();
+
+            FoundationContext.Logger?.Log("Bootstrap", "Foundation init complete.");
+        }
+
+        // WebGL 은 R3 core 기본 TimeProvider.System(threadpool)이 금지 — R3.Unity 의
+        // UnityProviderInitializer([RuntimeInitializeOnLoadMethod])가 Unity provider 로 교정한다.
+        // core-only 설치면 여기서 잡힌다.
+        private static void AssertR3Provider()
+        {
+            // ⚠ VERIFY: R3 provider 심볼명(ObservableSystem.DefaultTimeProvider / UnityTimeProvider)은 실측 확정(§6.2).
+#if !UNITY_EDITOR && UNITY_WEBGL
+            var tp = ObservableSystem.DefaultTimeProvider;
+            if (tp == null || tp.GetType().Name == "SystemTimeProvider")
+            {
+                FoundationContext.Logger?.LogError(
+                    "Bootstrap",
+                    "R3 DefaultTimeProvider 가 Unity provider 로 교정되지 않음 — R3.Unity(com.cysharp.r3) 설치 확인.");
+            }
+#endif
+        }
+
+        private static void LoadMixerGroups()
+        {
+            // 예시 규약: Addressables 주소 "Audio/MainMixer" 로 AudioMixer 로드 후 그룹 캐싱.
+            // 프로젝트에서 실제 주소/그룹명으로 교체.
+            //   var mixer = await Addressables.LoadAssetAsync<AudioMixer>("Audio/MainMixer").ToUniTask();
+            //   BgmMixerGroup = mixer.FindMatchingGroups("BGM")[0];
+            //   SeMixerGroup  = mixer.FindMatchingGroups("SE")[0];
+        }
+    }
+}

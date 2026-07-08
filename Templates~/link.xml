@@ -1,0 +1,43 @@
+<!--
+  HWI Foundation v1.0.0 — WebGL/IL2CPP link.xml (플랜 §7).
+
+  ‼ 신규 생성 금지 · 기존 append. 소비 프로젝트에 이미 link.xml 이 있으면(예: Assets/link.xml)
+  거기에 아래 <assembly> 항목만 추가한다. 덮어쓰면 기존 preserve(InputSystem/TMP) 손실 → 재스트립 → 런타임 붕괴.
+
+  전제: WebGL managedStrippingLevel = High(3), stripEngineCode = 1.
+  (ProjectSettings 의 "Low" 주석은 stale → High(3) 로 정정.)
+
+  ⚠ 어셈블리명은 각 라이브러리 import 후 실측으로 확정(플랜 §16.3):
+    - Addler 런타임 어셈블리 = "Addler"  (‼ "Addler.Runtime" 아님)
+    - USN 런타임 어셈블리 = "UnityScreenNavigator"
+    - DOTween 생성 asmdef = "DOTween.Modules"  (‼ "DOTween" 아님)
+    - LucidAudio 런타임 어셈블리 = "AnnulusGames.LucidAudio.Runtime"
+    - R3 = "R3", "R3.Unity", "Microsoft.Bcl.TimeProvider"
+-->
+<linker>
+  <!-- 기존 유지 (High 스트리핑 하 load-bearing) -->
+  <assembly fullname="Unity.InputSystem" preserve="all" />
+  <assembly fullname="Unity.TextMeshPro" preserve="all" />
+
+  <!-- R3 (WebGL TimeProvider resolve — UnityProviderInitializer 트림 방지) -->
+  <assembly fullname="R3" preserve="all" />
+  <assembly fullname="R3.Unity" preserve="all" />
+  <assembly fullname="Microsoft.Bcl.TimeProvider" preserve="all" />
+
+  <!-- DOTween (생성 asmdef 명 확인) -->
+  <assembly fullname="DOTween.Modules" preserve="all" />
+
+  <!-- Unity Screen Navigator (name/prefab-driven 뷰 인스턴스화 트림 방지) -->
+  <assembly fullname="UnityScreenNavigator" preserve="all" />
+
+  <!-- Addler -->
+  <assembly fullname="Addler" preserve="all" />
+
+  <!-- LucidAudio (어셈블리명 확인) -->
+  <assembly fullname="AnnulusGames.LucidAudio.Runtime" preserve="all" />
+
+  <!--
+    참고: 뷰/컨트롤러가 name/reflection/Addressables 로 인스턴스화되면 소비 게임 어셈블리도 preserve.
+    <assembly fullname="Game.Runtime" preserve="all" />
+  -->
+</linker>

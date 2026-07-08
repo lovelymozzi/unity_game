@@ -1,0 +1,13 @@
+{
+  "name": "Foundation.Input",
+  "rootNamespace": "Hwi.Foundation.Input",
+  "references": ["Foundation.Core", "Unity.InputSystem"],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

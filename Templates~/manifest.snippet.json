@@ -1,0 +1,25 @@
+{
+  "//": "HWI Foundation v1.0.0 — 소비/테스트 프로젝트 Packages/manifest.json 에 병합할 recipe (플랜 §16.2).",
+  "//_WARNING": "라이브 ShootGame 에는 지금 적용 금지 (임베드 사본 v0.5 동결). 신규 v1.0.0 프로젝트 대상.",
+  "//_UNITASK": "UniTask 는 파운데이션 Async/Save/Scene 모듈이 이미 참조 — 아래 git-URL 로 함께 추가.",
+  "//_DOTWEEN": "DOTween 은 UPM 없음. Asset Store free core import → Setup → Create ASMDEF(DOTween.Modules) → 소스+asmdef+DOTweenSettings.asset+.meta atomic 커밋.",
+
+  "scopedRegistries": [
+    {
+      "name": "package.openupm.com",
+      "url": "https://package.openupm.com",
+      "scopes": ["com.cysharp.r3", "org.nuget"]
+    }
+  ],
+  "dependencies": {
+    "com.hwi.foundation": "file:../LocalPackages/com.hwi.foundation",
+    "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
+    "com.cysharp.r3": "1.3.1",
+    "org.nuget.r3": "1.3.1",
+    "com.harumak.addler": "https://github.com/Haruma-K/Addler.git?path=/Assets/Addler#1.0.1",
+    "com.harumak.unityscreennavigator": "https://github.com/Haruma-K/UnityScreenNavigator.git?path=/Assets/UnityScreenNavigator#v1.7.5",
+    "com.annulusgames.lucid-audio": "https://github.com/AnnulusGames/LucidAudio.git?path=/Assets/LucidAudio#v1.0.1",
+    "com.unity.addressables": "2.9.1",
+    "com.unity.inputsystem": "1.19.0"
+  }
+}

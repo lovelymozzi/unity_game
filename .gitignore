@@ -1,0 +1,18 @@
+# ── Build outputs, not source ──
+*.csproj
+*.sln
+Library/
+Temp/
+obj/
+Logs/
+UserSettings/
+*.unitypackage
+.DS_Store
+
+# ── UPM "~"-suffixed folders ──
+# A common global core.excludesfile pattern ("*~", for editor backup files) also
+# matches these package folders. Re-include them so the repo is self-contained
+# and clones correctly regardless of the cloner's global git config.
+!Samples~/
+!Templates~/
+!Documentation~/

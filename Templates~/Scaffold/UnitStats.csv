@@ -1,0 +1,5 @@
+id,name,hp,moveSpeed
+1,Slime,30,1.5
+2,Bat,18,3.2
+3,Golem,120,0.8
+4,"Wraith, Cursed",45,2.4

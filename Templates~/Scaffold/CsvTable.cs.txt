@@ -1,0 +1,112 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// DataManager 계층 — 경량 CSV 파서 (HWI Foundation v1.0.0)
+//
+// CsvCSharp/NuGetForUnity 가 v1.0.1 로 이월(플랜 §16.1: Unsafe 4중충돌·AOT 미증명·사용처 0)됐으므로,
+// v1.0.0 신규 프로젝트는 이 순수 C# 리더로 시작한다. 런타임 리플렉션/소스젠 없음 → IL2CPP/WebGL 안전.
+// v1.0.1 업그레이드: [CsvObject] partial + CsvSerializer.Deserialize 로 교체(파일 인터페이스 동일 유지 권장).
+//
+// RFC-4180 서브셋: 쉼표 구분, 큰따옴표 감싼 필드, 필드 내 "" 이스케이프, CRLF/LF 개행 지원.
+// 복사 후 확장자를 .cs 로 변경.
+// ─────────────────────────────────────────────────────────────────────────────
+using System.Collections.Generic;
+using System.Text;
+
+namespace Game.Data
+{
+    /// <summary>파싱된 CSV 한 장. 헤더명으로 셀 접근.</summary>
+    public sealed class CsvTable
+    {
+        private readonly Dictionary<string, int> _headerIndex;
+        private readonly List<string[]> _rows;
+
+        public IReadOnlyList<string> Header { get; }
+        public int RowCount => _rows.Count;
+
+        private CsvTable(List<string> header, List<string[]> rows)
+        {
+            Header = header;
+            _rows = rows;
+            _headerIndex = new Dictionary<string, int>(header.Count);
+            for (int i = 0; i < header.Count; i++) _headerIndex[header[i]] = i;
+        }
+
+        /// <summary>행 인덱스 + 헤더명으로 셀 문자열. 없으면 빈 문자열.</summary>
+        public string Get(int row, string column)
+        {
+            if (row < 0 || row >= _rows.Count) return string.Empty;
+            if (!_headerIndex.TryGetValue(column, out int col)) return string.Empty;
+            var cells = _rows[row];
+            return col < cells.Length ? cells[col] : string.Empty;
+        }
+
+        public IEnumerable<string[]> Rows() => _rows;
+
+        /// <summary>CSV 텍스트 전체를 파싱. 첫 줄 = 헤더.</summary>
+        public static CsvTable Parse(string text)
+        {
+            var records = SplitRecords(text);
+            if (records.Count == 0) return new CsvTable(new List<string>(), new List<string[]>());
+
+            var header = new List<string>(records[0]);
+            var rows = new List<string[]>(records.Count - 1);
+            for (int i = 1; i < records.Count; i++) rows.Add(records[i]);
+            return new CsvTable(header, rows);
+        }
+
+        // 상태기계 파서: 따옴표 안의 쉼표/개행을 필드 구분자로 취급하지 않음.
+        private static List<string[]> SplitRecords(string text)
+        {
+            var records = new List<string[]>();
+            var fields = new List<string>();
+            var sb = new StringBuilder();
+            bool inQuotes = false;
+            int len = text?.Length ?? 0;
+
+            for (int i = 0; i < len; i++)
+            {
+                char c = text[i];
+
+                if (inQuotes)
+                {
+                    if (c == '"')
+                    {
+                        if (i + 1 < len && text[i + 1] == '"') { sb.Append('"'); i++; } // 이스케이프된 따옴표
+                        else inQuotes = false;
+                    }
+                    else sb.Append(c);
+                    continue;
+                }
+
+                switch (c)
+                {
+                    case '"':
+                        inQuotes = true;
+                        break;
+                    case ',':
+                        fields.Add(sb.ToString());
+                        sb.Clear();
+                        break;
+                    case '\r':
+                        break; // CRLF 의 CR 무시
+                    case '\n':
+                        fields.Add(sb.ToString());
+                        sb.Clear();
+                        records.Add(fields.ToArray());
+                        fields.Clear();
+                        break;
+                    default:
+                        sb.Append(c);
+                        break;
+                }
+            }
+
+            // 마지막 개행 없는 레코드 flush
+            if (sb.Length > 0 || fields.Count > 0)
+            {
+                fields.Add(sb.ToString());
+                records.Add(fields.ToArray());
+            }
+            return records;
+        }
+    }
+}

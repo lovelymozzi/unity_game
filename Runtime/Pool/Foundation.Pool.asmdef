@@ -1,0 +1,13 @@
+{
+  "name": "Foundation.Pool",
+  "rootNamespace": "Hwi.Foundation.Pool",
+  "references": ["Foundation.Core"],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

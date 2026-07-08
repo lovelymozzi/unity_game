@@ -1,0 +1,13 @@
+{
+  "name": "Foundation.Mobile",
+  "rootNamespace": "Hwi.Foundation.Mobile",
+  "references": ["Foundation.Core"],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

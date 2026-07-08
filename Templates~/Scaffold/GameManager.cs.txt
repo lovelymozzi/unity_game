@@ -1,0 +1,85 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// Core/Manager 계층 — 게임 흐름·상태·이벤트 (HWI Foundation v1.0.0)
+// 패키지: R3(Observable/ReactiveProperty) · Addler · UniTask · Addressables
+//
+// 규칙: 상태는 R3 ReactiveProperty 로 노출하고 UI 는 구독만 한다(단방향). 글로벌 이벤트는 Subject 로 발행.
+//       Foundation.Events(SO 채널)는 v1.0.0 에서 폐기 → R3 직접 사용(플랜 §2.3/§6.2).
+// 복사 후 확장자를 .cs 로 변경.
+// ─────────────────────────────────────────────────────────────────────────────
+using System;
+using System.Threading;
+using Cysharp.Threading.Tasks;
+using UnityEngine;
+using UnityEngine.AddressableAssets;
+using Addler.Runtime.Core.LifetimeBinding; // ⚠ VERIFY: Addler .DisposeWith() (§6.3/§16.3)
+using R3;                                   // ⚠ VERIFY: com.cysharp.r3 (§6.2)
+using Game.Data;
+
+namespace Game.Core
+{
+    public enum GamePhase { Boot, Title, Playing, Result }
+
+    /// <summary>게임 전역 상태/흐름의 단일 소유자. R3 로 상태를 발행, 뷰는 구독.</summary>
+    public sealed class GameManager : MonoBehaviour
+    {
+        public static GameManager Instance { get; private set; }
+
+        // ── 반응형 상태 (읽기 전용 뷰로 노출) ──
+        private readonly ReactiveProperty<GamePhase> _phase = new(GamePhase.Boot);
+        private readonly ReactiveProperty<int> _score = new(0);
+        private readonly Subject<Unit> _onPlayerDied = new();
+
+        public ReadOnlyReactiveProperty<GamePhase> Phase => _phase;
+        public ReadOnlyReactiveProperty<int> Score => _score;
+        public Observable<Unit> OnPlayerDied => _onPlayerDied;
+
+        private void Awake()
+        {
+            if (Instance != null && Instance != this) { Destroy(gameObject); return; }
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+
+        private void Start()
+        {
+            BootAsync(this.GetCancellationTokenOnDestroy()).Forget();
+        }
+
+        private async UniTaskVoid BootAsync(CancellationToken ct)
+        {
+            _phase.Value = GamePhase.Boot;
+            await DataManager.Instance.LoadAllAsync(gameObject, ct);
+            _phase.Value = GamePhase.Title;
+        }
+
+        public void StartPlay()
+        {
+            _score.Value = 0;
+            _phase.Value = GamePhase.Playing;
+        }
+
+        public void AddScore(int amount) => _score.Value += amount;
+
+        public void PlayerDied()
+        {
+            _onPlayerDied.OnNext(Unit.Default);
+            _phase.Value = GamePhase.Result;
+        }
+
+        /// <summary>Addler 수명 바인딩으로 프리팹 로드 — 대상 파괴 시 Release. R3 없이 순수 로드 헬퍼.</summary>
+        public async UniTask<GameObject> LoadPrefabAsync(string address, GameObject lifetimeOwner, CancellationToken ct = default)
+        {
+            var handle = Addressables.LoadAssetAsync<GameObject>(address);
+            handle.DisposeWith(lifetimeOwner); // ⚠ VERIFY: Addler 확장 시그니처
+            return await handle.ToUniTask(cancellationToken: ct);
+        }
+
+        private void OnDestroy()
+        {
+            _phase.Dispose();
+            _score.Dispose();
+            _onPlayerDied.Dispose();
+            if (Instance == this) Instance = null;
+        }
+    }
+}

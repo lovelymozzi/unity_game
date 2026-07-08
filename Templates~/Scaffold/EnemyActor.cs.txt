@@ -1,0 +1,80 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// Controller/Object 계층 — 오브젝트 이동·충돌·연출 (HWI Foundation v1.0.0)
+// 패키지: SpriteRenderer · DOTween · UnityEngine.Pool.ObjectPool · UniTask
+//
+// 규칙: 모든 게임 오브젝트는 SpriteRenderer. 모든 모션은 DOTween(코루틴 금지). 자주 생성/삭제되는
+//       오브젝트는 UnityEngine.Pool + UniTask 풀링. Update 내 GetComponent/Find 금지 → Awake 캐싱.
+// 복사 후 확장자를 .cs 로 변경.
+// ─────────────────────────────────────────────────────────────────────────────
+using System.Threading;
+using Cysharp.Threading.Tasks;
+using DG.Tweening;               // DOTween (asmdef "DOTween.Modules" 참조 필요 — 플랜 §6.5/§16.3)
+using UnityEngine;
+using UnityEngine.Pool;
+
+namespace Game.Actors
+{
+    [RequireComponent(typeof(SpriteRenderer))]
+    public sealed class EnemyActor : MonoBehaviour
+    {
+        [SerializeField] private float _moveDuration = 1.5f;
+
+        private SpriteRenderer _renderer;   // Awake 캐싱
+        private Transform _tf;
+        private IObjectPool<EnemyActor> _pool;
+        private Tween _activeTween;
+
+        private void Awake()
+        {
+            _renderer = GetComponent<SpriteRenderer>();
+            _tf = transform;
+        }
+
+        /// <summary>풀에서 꺼낸 직후 초기화 + DOTween 이동 연출. 도착 시 자동 반환.</summary>
+        public void Spawn(IObjectPool<EnemyActor> pool, Vector3 from, Vector3 to, Sprite sprite)
+        {
+            _pool = pool;
+            _renderer.sprite = sprite;
+            _tf.position = from;
+            _renderer.color = Color.white;
+
+            _activeTween?.Kill();
+            // 등장 팝 + 목표 지점 이동. scaled time(기본) — 일시정지 영향받음(의도).
+            _tf.localScale = Vector3.zero;
+            _activeTween = DOTween.Sequence()
+                .Append(_tf.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutBack))
+                .Append(_tf.DOMove(to, _moveDuration).SetEase(Ease.Linear))
+                .OnComplete(() => Despawn().Forget());
+        }
+
+        /// <summary>DOTween 페이드아웃 후 풀 반환(파괴 아님). UniTask 로 완료 대기.</summary>
+        public async UniTaskVoid Despawn(CancellationToken ct = default)
+        {
+            _activeTween?.Kill();
+            // DOFade 는 float 트윈 → AOT 안전(플랜 §6.5: DOTween.To 는 float/Color/Vector 만).
+            await _renderer.DOFade(0f, 0.2f).SetEase(Ease.Linear)
+                .ToUniTask(cancellationToken: ct);
+            _pool?.Release(this);
+        }
+
+        private void OnDisable()
+        {
+            _activeTween?.Kill();
+            _activeTween = null;
+        }
+
+        // ── 풀 팩토리 (UnityEngine.Pool.ObjectPool 연계) ──
+        public static ObjectPool<EnemyActor> CreatePool(EnemyActor prefab, Transform parent, int prewarm = 16)
+        {
+            var pool = new ObjectPool<EnemyActor>(
+                createFunc: () => Instantiate(prefab, parent),
+                actionOnGet: a => a.gameObject.SetActive(true),
+                actionOnRelease: a => a.gameObject.SetActive(false),
+                actionOnDestroy: a => Destroy(a.gameObject),
+                collectionCheck: true,
+                defaultCapacity: prewarm,
+                maxSize: 256);
+            return pool;
+        }
+    }
+}
