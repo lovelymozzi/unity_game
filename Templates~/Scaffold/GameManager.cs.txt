@@ -11,8 +11,8 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using Addler.Runtime.Core.LifetimeBinding; // ⚠ VERIFY: Addler .DisposeWith() (§6.3/§16.3)
-using R3;                                   // ⚠ VERIFY: com.cysharp.r3 (§6.2)
+using Addler.Runtime.Core.LifetimeBinding; // ✅ Addler .BindTo(handle, GameObject) 실측(ns "Addler.Runtime.Core.LifetimeBinding", 어셈블리 "Addler")
+using R3;                                   // ✅ com.cysharp.r3 실측(§6.2)
 using Game.Data;
 
 namespace Game.Core
@@ -69,8 +69,8 @@ namespace Game.Core
         /// <summary>Addler 수명 바인딩으로 프리팹 로드 — 대상 파괴 시 Release. R3 없이 순수 로드 헬퍼.</summary>
         public async UniTask<GameObject> LoadPrefabAsync(string address, GameObject lifetimeOwner, CancellationToken ct = default)
         {
-            var handle = Addressables.LoadAssetAsync<GameObject>(address);
-            handle.DisposeWith(lifetimeOwner); // ⚠ VERIFY: Addler 확장 시그니처
+            // ✅ Addler: BindTo(AsyncOperationHandle<T>, GameObject) — 핸들 반환(체인) → 대상 파괴 시 Release (‼ DisposeWith 아님)
+            var handle = Addressables.LoadAssetAsync<GameObject>(address).BindTo(lifetimeOwner);
             return await handle.ToUniTask(cancellationToken: ct);
         }
 

@@ -1,3 +1,7 @@
+# ── Local test/validation Unity project (M0 게이트용, 패키지 산출물 아님) ──
+# `~` 접미사로 UPM 패키지 스캔에서도 무시됨(Samples~/Templates~ 와 동일). 여기선 git 추적도 제외.
+/TestProject~/
+
 # ── Build outputs, not source ──
 *.csproj
 *.sln

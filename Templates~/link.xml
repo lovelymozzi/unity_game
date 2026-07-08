@@ -10,7 +10,9 @@
   ⚠ 어셈블리명은 각 라이브러리 import 후 실측으로 확정(플랜 §16.3):
     - Addler 런타임 어셈블리 = "Addler"  (‼ "Addler.Runtime" 아님)
     - USN 런타임 어셈블리 = "UnityScreenNavigator"
-    - DOTween 생성 asmdef = "DOTween.Modules"  (‼ "DOTween" 아님)
+    - DOTween 코어 어셈블리 = "DOTween" (플러그인 DLL). ‼ 2026-07-08 실측: 런타임 어셈블리는 "DOTween"이며
+      "DOTween.Modules"는 asmdef 소비자가 Setup>Create ASMDEF 를 돌렸을 때만 존재(모듈 소스 래핑). 플러그인 DLL
+      방식(권장 free core)에선 모듈 소스가 Assembly-CSharp-firstpass 로 컴파일됨 → 아래는 코어 "DOTween" 을 preserve.
     - LucidAudio 런타임 어셈블리 = "AnnulusGames.LucidAudio.Runtime"
     - R3 = "R3", "R3.Unity", "Microsoft.Bcl.TimeProvider"
 -->
@@ -24,8 +26,8 @@
   <assembly fullname="R3.Unity" preserve="all" />
   <assembly fullname="Microsoft.Bcl.TimeProvider" preserve="all" />
 
-  <!-- DOTween (생성 asmdef 명 확인) -->
-  <assembly fullname="DOTween.Modules" preserve="all" />
+  <!-- DOTween 코어 (실측: 어셈블리명 "DOTween"). asmdef 소비 시엔 "DOTween.Modules" 도 추가. -->
+  <assembly fullname="DOTween" preserve="all" />
 
   <!-- Unity Screen Navigator (name/prefab-driven 뷰 인스턴스화 트림 방지) -->
   <assembly fullname="UnityScreenNavigator" preserve="all" />

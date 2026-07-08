@@ -1,27 +1,29 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// UI/View 계층 — 화면(Screen) (HWI Foundation v1.0.0)
+// UI/View 계층 — 화면(Page) (HWI Foundation v1.0.0)
 // 패키지: Unity Screen Navigator(Page) · TMP · DOTween · R3(구독)
 //
 // 규칙: 화면/모달은 USN. Foundation.Popup 은 폐기(플랜 §2.3/§6.6). 모든 텍스트 TMP_Text.
 //       상태는 GameManager 의 R3 스트림을 구독만(단방향). 모션은 DOTween.
 //
-// ⚠ VERIFY (플랜 §6.6/§16.3): USN v1.7.5 라이프사이클 시그니처(UniTask 반환 여부), 컨테이너 Push API,
-//    참조 어셈블리명 "UnityScreenNavigator" 명시 참조는 M0 에디터 기동 후 실측 확정.
+// ✅ VERIFIED (2026-07-08, USN 1.7.5 실측): 베이스 = Page(ns UnityScreenNavigator.Runtime.Core.Page),
+//    라이프사이클 = Task 반환 — define **USN_USE_ASYNC_METHODS** 필수(미설정 시 IEnumerator 코루틴).
+//    참조 어셈블리 "UnityScreenNavigator" 명시. (구 초안의 UniTask/Screen/Screens 는 실재 API 아님.)
+//    async Task 본문에서 UniTask(.ToUniTask()) await 가능 — Task↔UniTask 브리지.
 // 복사 후 확장자를 .cs 로 변경.
 // ─────────────────────────────────────────────────────────────────────────────
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using R3;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityScreenNavigator.Runtime.Core.Modals;
-using UnityScreenNavigator.Runtime.Core.Screens;
+using UnityScreenNavigator.Runtime.Core.Page;
 using Game.Core;
 
 namespace Game.UI
 {
-    public sealed class MainScreen : Screen // ⚠ VERIFY: USN 베이스(Page/Screen) 실제 클래스명
+    public sealed class MainScreen : Page
     {
         [SerializeField] private CanvasGroup _root;
         [SerializeField] private TMP_Text _scoreLabel;
@@ -30,7 +32,7 @@ namespace Game.UI
 
         private readonly CompositeDisposable _subscriptions = new();
 
-        public override UniTask Initialize()
+        public override Task Initialize()
         {
             _playButton.onClick.AddListener(() => GameManager.Instance.StartPlay());
             _quitButton.onClick.AddListener(() => OpenQuitConfirm().Forget());
@@ -40,32 +42,30 @@ namespace Game.UI
                 .Subscribe(v => _scoreLabel.text = $"SCORE {v}")
                 .AddTo(_subscriptions);
 
-            return UniTask.CompletedTask;
+            return Task.CompletedTask;
         }
 
-        public override async UniTask WillPushEnter()
+        // 진입 애니메이션은 await 가능한 WillPushEnter(Task)에서 수행.
+        // (DidPushEnter 는 void(동기 콜백) 라 await 불가 — USN 1.7.5 실측.)
+        public override async Task WillPushEnter()
         {
             _root.alpha = 0f;
-        }
-
-        public override async UniTask DidPushEnter()
-        {
             // DOTween 페이드 인 (scaled — 타이틀 화면은 timeScale 1).
             await _root.DOFade(1f, 0.3f).SetEase(Ease.OutQuad).ToUniTask();
+        }
+
+        public override Task Cleanup()
+        {
+            _subscriptions.Dispose();
+            _playButton.onClick.RemoveAllListeners();
+            _quitButton.onClick.RemoveAllListeners();
+            return Task.CompletedTask;
         }
 
         private async UniTaskVoid OpenQuitConfirm()
         {
             var modal = await ModalHost.PushConfirmAsync("종료할까요?");
             if (modal) Application.Quit();
-        }
-
-        public override UniTask Cleanup()
-        {
-            _subscriptions.Dispose();
-            _playButton.onClick.RemoveAllListeners();
-            _quitButton.onClick.RemoveAllListeners();
-            return UniTask.CompletedTask;
         }
     }
 }

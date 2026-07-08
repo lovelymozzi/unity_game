@@ -6,6 +6,25 @@
 
 각 게이트 = **에디터 clean 컴파일 + 해당 기능 실 WebGL/Android IL2CPP 빌드 통과**. 에디터 Play(Mono)는 대체 불가.
 
+---
+
+## ✅ 실측 검증 완료 (2026-07-08, canonical repo `TestProject~/`, unity-exec)
+
+Unity 6000.3.16f1 테스트 프로젝트(`file:../../` 로 패키지 로컬 참조)에서 아래까지 **에디터 컴파일 green** 확인:
+- **패키지 해석 + 5종 라이브러리 + 11 foundation asmdef 컴파일 green** (errorCount 0). R3 1.3.1(+org.nuget.r3)·Addler·USN 1.7.5·LucidAudio 1.0.1·UniTask 2.5.11 + DOTween(공식 Demigiant 6000.3 소스).
+- **스캐폴드 8개 컴파일 green** (errors 0, warnings 0) — 아래 실측 교정 반영 후.
+
+**🔑 실측 교정 (이전 추측 대비 — 반드시 반영):**
+- **`EXCLUDE_COMPILER_SERVICES_UNSAFE` 는 클린 신규 프로젝트엔 불필요** — Unsafe 단 1벌(중복 없음). ai.assistant/burst/collections 가 있는 **ShootGame 임베드에서만** 필요.
+- **define `USN_USE_ASYNC_METHODS` 필수** — 없으면 USN 라이프사이클이 `IEnumerator`(코루틴). 있으면 `Task` 반환 → UniTask await 브리지 가능. (UniTask 아님, `System.Threading.Tasks.Task`.)
+- **define `UNITASK_DOTWEEN_SUPPORT` 필수** — DOTween 이 raw DLL 이라 UniTask versionDefine 자동감지 불가 → `Tween.ToUniTask()` 확장을 수동 define 로 켜야 함.
+- **DOTween 코어 어셈블리 = `DOTween`** (‼ `DOTween.Modules` 아님). 모듈 소스는 firstpass(플러그인 DLL 방식) → link.xml 은 `DOTween` preserve.
+- **Addler 수명바인딩 = `handle.BindTo(gameObject)`** (‼ `DisposeWith` 아님), ns `Addler.Runtime.Core.LifetimeBinding`, 어셈블리 `Addler`. 반환=핸들(체인).
+- **USN: 베이스 `Page`/`Modal`**(‼ `Screen`/`Screens`/`Modals` 아님, ns 단수 `...Core.Page`/`...Core.Modal`). `ModalContainer.Find(string)`, `Push(key,playAnimation,modalId=null,loadAsync=true,onLoad)`, onLoad=`(string modalId, Modal modal)` 튜플, `AsyncProcessHandle.Task`(→`.AsUniTask()`).
+- **R3**: `ObservableSystem.DefaultTimeProvider`(프로퍼티) + `UnityTimeProvider`/`UnityFrameProvider`(R3.Unity) 실측.
+
+**미완 = 실 WebGL IL2CPP(High) + 실 Android IL2CPP 왕복 빌드**(에디터 컴파일로 대체 불가). 빌드 타깃은 Unity API 상 Android/WebGL/iOS 지원 확인됨.
+
 ## M-1 도달성 검증 (사내망/CI)
 - [ ] `https://package.openupm.com` (+ `org.nuget` 업링크) resolve
 - [ ] `github.com` — UniTask / Addler / USN / LucidAudio / (NuGetForUnity, v1.0.1)
@@ -13,7 +32,9 @@
 - 막히면: 사내 UPM 미러 or 소스 벤더링(`Assets/` 커밋). 결과로 배포 채널 확정.
 
 ## M0 기반 (DLL 반입 전 선행 — 안 하면 팀 에디터/빌드 붕괴)
-- [ ] `EXCLUDE_COMPILER_SERVICES_UNSAFE` 스크립팅 define — **전 타깃 그룹**(Standalone/WebGL/**Android/iOS**). AI Assistant 번들 Unsafe(2.11.0-pre.1) 등 4중 충돌 회피. Unity 6000.3.16f1 은 하이재킹 픽스(6000.5.0a2) 이전.
+- [x] ~~`EXCLUDE_COMPILER_SERVICES_UNSAFE`~~ — **클린 신규 프로젝트엔 불필요**(2026-07-08 실측: Unsafe 1벌). ShootGame 임베드(ai.assistant/burst/collections)에서만 필요.
+- [ ] **define `USN_USE_ASYNC_METHODS`** — 전 타깃 그룹. USN 라이프사이클 Task 화(미설정=IEnumerator). ‼ 필수.
+- [ ] **define `UNITASK_DOTWEEN_SUPPORT`** — 전 타깃 그룹. DOTween(raw DLL) ↔ UniTask `.ToUniTask()` 브리지. ‼ 필수.
 - [ ] Assembly Version Validation = OFF (Player Settings, 커밋).
 - [ ] WebGL managedStrippingLevel = High(3), `stripEngineCode=1` 확인. link.xml 의 "Low" 주석 → "High(3)" 정정.
 - [ ] `link.xml` **append**(신규 생성/덮어쓰기 금지) — `Templates~/link.xml` 항목 추가.
@@ -29,11 +50,12 @@
 - [ ] `AddressableAssetSettings` + 최소 1그룹 + 주소 지정(없으면 Addler 진입점 전부 `InvalidKeyException`).
 
 ## 스캐폴드 `⚠ VERIFY` 실측 확정
-`Templates~/Scaffold/*.cs.txt` 의 VERIFY 주석을 실 API 로 교체:
-- [ ] R3 provider 심볼(`ObservableSystem.DefaultTimeProvider` / `UnityTimeProvider`), autoReferenced 여부
-- [ ] Addler `.DisposeWith()` 네임스페이스 · `AddressablePool`/`Use()`/`Return()`/`BindTo<T>`
-- [ ] USN `Screen`/`Page`/`Modal` 라이프사이클 반환형(UniTask 여부) · `ModalContainer` Push/Pop · `AsyncProcessHandle.Task.AsUniTask()`
-- [ ] LucidAudio `SetAudioMixerGroup` · `FadeVolume(float,float,Action)` · `Stop(fadeOut)` · `AudioType` full-qualify
+`Templates~/Scaffold/*.cs.txt` 의 VERIFY 주석을 실 API 로 교체 — **완료(2026-07-08, 컴파일 green)**:
+- [x] R3 provider 심볼 = `ObservableSystem.DefaultTimeProvider` + `UnityTimeProvider`/`UnityFrameProvider`(R3.Unity). ✅
+- [x] Addler = `handle.BindTo(gameObject)`(‼ DisposeWith 아님), ns `Addler.Runtime.Core.LifetimeBinding`, 반환=핸들 체인. ✅
+- [x] USN 베이스 `Page`/`Modal`(단수 ns), 라이프사이클 `Task`(USN_USE_ASYNC_METHODS), `ModalContainer.Find/Push/Pop`, `AsyncProcessHandle.Task.AsUniTask()`. ✅
+- [ ] LucidAudio `SetAudioMixerGroup`·`FadeVolume`·`AudioType` full-qualify — **스캐폴드에 LucidAudio 사용처 없음**(FoundationBootstrap 는 믹서 그룹 캐싱만). 오디오 실사용 시 별도 검증(실빌드 크로스페이드 청감 게이트에서).
+- DOTween 어셈블리 `DOTween`, `Tween.ToUniTask()`(UNITASK_DOTWEEN_SUPPORT). ✅
 
 ## 실빌드 왕복 게이트 (v1.0.0 태깅 전제)
 **실 WebGL IL2CPP(High) + 실 Android IL2CPP** 두 빌드 모두 green:
@@ -47,4 +69,4 @@
 ## 완료 시
 - [ ] `packages-lock.json` 커밋(해시 핀).
 - [ ] 실측으로 갱신된 함정/교정을 `claudedocs/` 에 기록(자동 메모리 금지 — 프로젝트 규칙).
-- [ ] `git tag hwi-foundation-v1.0.0` (마스터).
+- [ ] `git tag v1.0.0` + `git push origin v1.0.0` (canonical repo `hwi-foundation`, remote `phj9033/Unity_Foundation_JG`).

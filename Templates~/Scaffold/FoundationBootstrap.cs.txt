@@ -15,7 +15,7 @@ using UnityEngine.Audio;
 using Hwi.Foundation.Core;
 using Hwi.Foundation.Logging;
 using Hwi.Foundation.Mobile;
-using R3;                       // ⚠ VERIFY: com.cysharp.r3 (플랜 §6.2, autoReferenced 여부 §12)
+using R3;                       // ✅ com.cysharp.r3 실측(§6.2)
 
 namespace Game.Core
 {
@@ -57,7 +57,9 @@ namespace Game.Core
         // core-only 설치면 여기서 잡힌다.
         private static void AssertR3Provider()
         {
-            // ⚠ VERIFY: R3 provider 심볼명(ObservableSystem.DefaultTimeProvider / UnityTimeProvider)은 실측 확정(§6.2).
+            // ✅ VERIFIED (USN 1.7.5 아님 — R3 1.3.1): R3.ObservableSystem.DefaultTimeProvider(프로퍼티) +
+            //    R3.UnityTimeProvider/UnityFrameProvider(R3.Unity) 실측 확인. WebGL 은 R3.Unity 의
+            //    UnityProviderInitializer 가 자동 교정(core-only 설치 금지).
 #if !UNITY_EDITOR && UNITY_WEBGL
             var tp = ObservableSystem.DefaultTimeProvider;
             if (tp == null || tp.GetType().Name == "SystemTimeProvider")

@@ -8,7 +8,9 @@
 // ─────────────────────────────────────────────────────────────────────────────
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using DG.Tweening;               // DOTween (asmdef "DOTween.Modules" 참조 필요 — 플랜 §6.5/§16.3)
+using DG.Tweening;               // ✅ DOTween 실측: 코어 어셈블리 "DOTween"(‼ "DOTween.Modules" 아님).
+                                 //    DOFade/DOScale/DOMove 등 확장은 Modules 소스(플러그인 DLL 방식이면 firstpass →
+                                 //    Assembly-CSharp 만 접근; asmdef 소비 시 Setup>Create ASMDEF 로 DOTween.Modules 생성 필요).
 using UnityEngine;
 using UnityEngine.Pool;
 

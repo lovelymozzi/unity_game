@@ -5,11 +5,14 @@
 // USN 컨테이너 Push/Pop API 를 한곳에 격리한다(가장 실측 확정이 필요한 표면 — 플랜 §6.6/§16.3).
 // 뷰(MainScreen/ConfirmModal)는 컨테이너를 직접 만지지 않고 이 파사드만 호출 → API 변화 흡수 지점 단일화.
 //
-// ⚠ VERIFY: ModalContainer 조회/Push 시그니처, AsyncProcessHandle.Task.AsUniTask(), 모달 프리팹 키(Addressables).
+// ✅ VERIFIED (2026-07-08, USN 1.7.5 실측): ns UnityScreenNavigator.Runtime.Core.Modal(단수),
+//    ModalContainer.Find(string), Push(key, playAnimation, modalId=null, loadAsync=true, onLoad=null),
+//    onLoad 인자 = (string modalId, Modal modal) 튜플 → x.modal 유효, Pop(playAnimation, popCount=1),
+//    AsyncProcessHandle.Task(System.Threading.Tasks.Task) → .AsUniTask() 유효. 모달 프리팹 키는 Addressables.
 // 복사 후 확장자를 .cs 로 변경.
 // ─────────────────────────────────────────────────────────────────────────────
 using Cysharp.Threading.Tasks;
-using UnityScreenNavigator.Runtime.Core.Modals;
+using UnityScreenNavigator.Runtime.Core.Modal;
 
 namespace Game.UI
 {
@@ -18,7 +21,7 @@ namespace Game.UI
         // 프로젝트 규약: 모달 프리팹 Addressables 키.
         private const string ConfirmModalKey = "UI/ConfirmModal";
 
-        private static ModalContainer Container => ModalContainer.Find("Main"); // ⚠ VERIFY: 컨테이너 조회 방식
+        private static ModalContainer Container => ModalContainer.Find("Main"); // ✅ Find(string) 실측 확인
 
         /// <summary>확인 모달을 push 하고 사용자 선택(true=확인)을 await. </summary>
         public static async UniTask<bool> PushConfirmAsync(string message)
@@ -28,10 +31,10 @@ namespace Game.UI
             // USN Push: 프리팹 인스턴스가 생성되면 onLoad 콜백으로 뷰를 잡아 Prepare 호출.
             var handle = Container.Push(ConfirmModalKey, playAnimation: true, onLoad: x =>
             {
-                var modal = x.modal as ConfirmModal; // ⚠ VERIFY: onLoad 인자 타입(ModalContainer 콜백)
+                var modal = x.modal as ConfirmModal; // ✅ onLoad = (string modalId, Modal modal) 튜플
                 result = modal.Prepare(message);
             });
-            await handle.Task.AsUniTask(); // ⚠ VERIFY: AsyncProcessHandle → UniTask 변환
+            await handle.Task.AsUniTask(); // ✅ AsyncProcessHandle.Task → UniTask
 
             return await result;
         }

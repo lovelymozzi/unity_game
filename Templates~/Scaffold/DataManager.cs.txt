@@ -12,7 +12,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using Addler.Runtime.Core.LifetimeBinding; // ⚠ VERIFY: Addler .DisposeWith() 네임스페이스 (플랜 §6.3/§16.3, 어셈블리명 "Addler")
+using Addler.Runtime.Core.LifetimeBinding; // ✅ Addler .BindTo(handle, GameObject) 실측(ns "Addler.Runtime.Core.LifetimeBinding", 어셈블리 "Addler")
 
 namespace Game.Data
 {
@@ -60,8 +60,8 @@ namespace Game.Data
         private async UniTask LoadUnitStatsAsync(string address, GameObject lifetimeOwner, CancellationToken ct)
         {
             // Addressable TextAsset 비동기 로드 + Addler 로 수명 바인딩(대상 파괴 시 Release).
-            var handle = Addressables.LoadAssetAsync<TextAsset>(address);
-            handle.DisposeWith(lifetimeOwner); // ⚠ VERIFY: Addler 확장 시그니처
+            // ✅ Addler: BindTo(AsyncOperationHandle<T>, GameObject) — 핸들 반환(체인) → 대상 파괴 시 Release (‼ DisposeWith 아님)
+            var handle = Addressables.LoadAssetAsync<TextAsset>(address).BindTo(lifetimeOwner);
             var asset = await handle.ToUniTask(cancellationToken: ct);
 
             var table = CsvTable.Parse(asset.text);

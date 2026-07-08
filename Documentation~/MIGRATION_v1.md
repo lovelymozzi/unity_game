@@ -32,11 +32,14 @@ public sealed class DoFadeTransition : ITransition
 
 ## 실행 위치 & reverse-merge 편차 (기록)
 
-플랜 §4.1 은 v1.0.0 재정비 전에 **임베드 사본의 마스터-대비 앞선 변경(Popup 모듈, `FadeCanvasGroupUnscaledAsync`)을 PKM 마스터로 역병합**하라고 권했다. v1.0.0 실행에서 이를 **물리적으로 수행하지 않았다.** 사유:
+> **위치 갱신(2026-07-08):** canonical = standalone repo `/Users/user/PKM/hwi-foundation` (git, remote `phj9033/Unity_Foundation_JG`). 최초 재정비 작업본 `hwi_Data/hwi-foundation`(git 없음)은 승격 후 superseded.
+
+플랜 §4.1 은 v1.0.0 재정비 전에 **임베드 사본의 canonical-대비 앞선 변경(Popup 모듈, `FadeCanvasGroupUnscaledAsync`)을 canonical repo로 역병합**하라고 권했다. v1.0.0 실행에서 이를 **물리적으로 수행하지 않았다.** 사유:
 
 1. v1.0.0 은 `Popup` 과 fade 프리미티브를 **명시적으로 제거**한다(결정 4 / §2.3). 역병합 후 즉시 삭제 = churn.
-2. 이번 작업은 **커밋 금지** — 역병합의 본래 목적(마스터 git 히스토리 parity)이 성립하지 않음.
-3. 임베드 사본(`ShootGameHwi/Assets/Plugins/HwiFoundation`)은 **v0.5 동결·미변경**으로 보존 → 앞선 작업이 유실되지 않음. 그 자체가 **canonical 이관 소스**다.
+2. 임베드 사본(`ShootGameHwi/Assets/Plugins/HwiFoundation`)은 **v0.5 동결·미변경**으로 보존 → 앞선 작업이 유실되지 않음. 그 자체가 **canonical 이관 소스**다.
+
+> ⚠ 원 사유에 "커밋 금지로 히스토리 parity 무의미"가 있었으나, 승격된 이 repo는 git 관리다. 그럼에도 편차는 §1(어차피 제거될 코드)·§2(임베드가 이관 소스로 보존)로 **여전히 유효**. 되돌리려면 아래 §"canonical 소스 위치" 경로에서 이관.
 
 ### canonical 소스 위치
 - **Popup 모듈 원본**: `ShootGameHwi/Assets/Plugins/HwiFoundation/Runtime/Popup/` (`Popup.cs`/`PopupManager.cs`/`PopupOfT.cs` + `Foundation.Popup.asmdef`). → §13 ShootGame 이관 시 USN Modal 로 변환.

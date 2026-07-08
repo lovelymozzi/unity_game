@@ -5,20 +5,22 @@
 // 규칙: 확인/취소 등 모달은 USN Modal(구 Foundation.Popup 대체). 모달은 보통 일시정지(timeScale=0)
 //       위에 뜨므로 DOTween 은 반드시 .SetUpdate(true)(unscaled) + Ease.Linear 로 freeze 회피(플랜 §6.5).
 //
-// ⚠ VERIFY (§6.6/§16.3): USN Modal 라이프사이클/컨테이너 API, 어셈블리명 "UnityScreenNavigator".
+// ✅ VERIFIED (2026-07-08, USN 1.7.5 실측): 베이스 = Modal(ns UnityScreenNavigator.Runtime.Core.Modal),
+//    라이프사이클 = Task 반환(define USN_USE_ASYNC_METHODS 필수). 어셈블리 "UnityScreenNavigator".
+//    진입 애니메이션은 await 가능한 WillPushEnter(Task)에서 — DidPushEnter 는 void(동기).
 // 복사 후 확장자를 .cs 로 변경.
 // ─────────────────────────────────────────────────────────────────────────────
-using System.Threading;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityScreenNavigator.Runtime.Core.Modals;
+using UnityScreenNavigator.Runtime.Core.Modal;
 
 namespace Game.UI
 {
-    public sealed class ConfirmModal : Modal // ⚠ VERIFY: USN Modal 베이스 클래스
+    public sealed class ConfirmModal : Modal
     {
         [SerializeField] private RectTransform _panel;
         [SerializeField] private TMP_Text _message;
@@ -35,14 +37,14 @@ namespace Game.UI
             return _result.Task;
         }
 
-        public override UniTask Initialize()
+        public override Task Initialize()
         {
             _okButton.onClick.AddListener(() => Close(true));
             _cancelButton.onClick.AddListener(() => Close(false));
-            return UniTask.CompletedTask;
+            return Task.CompletedTask;
         }
 
-        public override async UniTask DidPushEnter()
+        public override async Task WillPushEnter()
         {
             // unscaled 모션 — 일시정지(timeScale=0) 위에서도 진행.
             _panel.localScale = Vector3.one * 0.8f;
@@ -52,19 +54,19 @@ namespace Game.UI
                 .ToUniTask();
         }
 
+        public override Task Cleanup()
+        {
+            _okButton.onClick.RemoveAllListeners();
+            _cancelButton.onClick.RemoveAllListeners();
+            _result?.TrySetResult(false); // 외부 dismiss 안전판
+            return Task.CompletedTask;
+        }
+
         private void Close(bool confirmed)
         {
             _result?.TrySetResult(confirmed);
             // 실제 pop 은 ModalHost 가 담당(컨테이너 참조 분리).
             ModalHost.RequestPop();
-        }
-
-        public override UniTask Cleanup()
-        {
-            _okButton.onClick.RemoveAllListeners();
-            _cancelButton.onClick.RemoveAllListeners();
-            _result?.TrySetResult(false); // 외부 dismiss 안전판
-            return UniTask.CompletedTask;
         }
     }
 }
