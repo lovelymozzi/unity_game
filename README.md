@@ -79,7 +79,7 @@ Asset Store free core import → **Tools ▸ Demigiant ▸ DOTween Utility Panel
 - **Assembly Version Validation = OFF** — 안 하면 R3 TimeProvider 8.0.0 이 IL2CPP `FileLoadException`.
 - **Scripting Define Symbols — 전 타깃 그룹**(Standalone/WebGL/**Android/iOS**):
   - `USN_USE_ASYNC_METHODS` — **필수**. USN 라이프사이클을 `Task` 반환으로 전환(미설정 시 `IEnumerator` 코루틴). (2026-07-08 실측)
-  - `UNITASK_DOTWEEN_SUPPORT` — **필수**. DOTween(raw DLL)은 UniTask versionDefine 자동감지가 안 돼 `Tween.ToUniTask()` 확장을 이 define 로 켠다. (2026-07-08 실측)
+  - `UNITASK_DOTWEEN_SUPPORT` — **필수**. DOTween(raw DLL)은 UniTask versionDefine 자동감지가 안 돼 `Tween.ToUniTask()` 확장을 이 define 로 켠다. (2026-07-08 실측) **‼ 반드시 §2 DOTween 임포트를 끝낸 뒤에 켤 것.** DOTween 없이 이 define 만 켜면 UniTask 의 `DOTweenAsyncExtensions.cs`(`#if UNITASK_DOTWEEN_SUPPORT`, `DG`/`Tween`/`TweenCallback` 참조)가 CS0246 로 컴파일 실패 → 스크립트 로드 붕괴로 **에디터가 실행 즉시 안 열린다**. 이미 이 상태면: 에디터 끈 채 `ProjectSettings.asset` 4개 타깃에서 이 define 제거 → 열기 → DOTween 임포트 → 재추가.
   - `EXCLUDE_COMPILER_SERVICES_UNSAFE` — **클린 신규 프로젝트엔 불필요**(2026-07-08 실측: Unsafe 1벌). Burst/AI Assistant/Collections 로 `System.Runtime.CompilerServices.Unsafe` 가 중복되는 기존 프로젝트(예: ShootGame 임베드)에서만: 재반입 *"Multiple precompiled assemblies with the same name"* → 컴파일 붕괴 회피용(Assembly Version Validation OFF 로는 해결 안 됨 — 동일 파일명).
 - **WebGL managedStrippingLevel = High(3)**, `stripEngineCode = 1`.
 

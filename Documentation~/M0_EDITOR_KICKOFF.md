@@ -17,7 +17,7 @@ Unity 6000.3.16f1 테스트 프로젝트(`file:../../` 로 패키지 로컬 참�
 **🔑 실측 교정 (이전 추측 대비 — 반드시 반영):**
 - **`EXCLUDE_COMPILER_SERVICES_UNSAFE` 는 클린 신규 프로젝트엔 불필요** — Unsafe 단 1벌(중복 없음). ai.assistant/burst/collections 가 있는 **ShootGame 임베드에서만** 필요.
 - **define `USN_USE_ASYNC_METHODS` 필수** — 없으면 USN 라이프사이클이 `IEnumerator`(코루틴). 있으면 `Task` 반환 → UniTask await 브리지 가능. (UniTask 아님, `System.Threading.Tasks.Task`.)
-- **define `UNITASK_DOTWEEN_SUPPORT` 필수** — DOTween 이 raw DLL 이라 UniTask versionDefine 자동감지 불가 → `Tween.ToUniTask()` 확장을 수동 define 로 켜야 함.
+- **define `UNITASK_DOTWEEN_SUPPORT` 필수** — DOTween 이 raw DLL 이라 UniTask versionDefine 자동감지 불가 → `Tween.ToUniTask()` 확장을 수동 define 로 켜야 함. **‼ 순서 하드 의존:** 이 define 는 **DOTween 을 실제 임포트한 뒤에만** 켠다. DOTween 없이 켜면 UniTask 의 `DOTweenAsyncExtensions.cs`(`#if UNITASK_DOTWEEN_SUPPORT`, `DG`/`Tween`/`TweenCallback` 참조)가 CS0246 로 컴파일 실패 → **스크립트 로드 붕괴로 에디터가 아예 안 열림**. → §M0 체크리스트에서 이 항목을 DOTween 임포트 뒤로 둘 것.
 - **DOTween 코어 어셈블리 = `DOTween`** (‼ `DOTween.Modules` 아님). 모듈 소스는 firstpass(플러그인 DLL 방식) → link.xml 은 `DOTween` preserve.
 - **Addler 수명바인딩 = `handle.BindTo(gameObject)`** (‼ `DisposeWith` 아님), ns `Addler.Runtime.Core.LifetimeBinding`, 어셈블리 `Addler`. 반환=핸들(체인).
 - **USN: 베이스 `Page`/`Modal`**(‼ `Screen`/`Screens`/`Modals` 아님, ns 단수 `...Core.Page`/`...Core.Modal`). `ModalContainer.Find(string)`, `Push(key,playAnimation,modalId=null,loadAsync=true,onLoad)`, onLoad=`(string modalId, Modal modal)` 튜플, `AsyncProcessHandle.Task`(→`.AsUniTask()`).
@@ -34,7 +34,7 @@ Unity 6000.3.16f1 테스트 프로젝트(`file:../../` 로 패키지 로컬 참�
 ## M0 기반 (DLL 반입 전 선행 — 안 하면 팀 에디터/빌드 붕괴)
 - [x] ~~`EXCLUDE_COMPILER_SERVICES_UNSAFE`~~ — **클린 신규 프로젝트엔 불필요**(2026-07-08 실측: Unsafe 1벌). ShootGame 임베드(ai.assistant/burst/collections)에서만 필요.
 - [ ] **define `USN_USE_ASYNC_METHODS`** — 전 타깃 그룹. USN 라이프사이클 Task 화(미설정=IEnumerator). ‼ 필수.
-- [ ] **define `UNITASK_DOTWEEN_SUPPORT`** — 전 타깃 그룹. DOTween(raw DLL) ↔ UniTask `.ToUniTask()` 브리지. ‼ 필수.
+- [ ] **define `UNITASK_DOTWEEN_SUPPORT`** — 전 타깃 그룹. DOTween(raw DLL) ↔ UniTask `.ToUniTask()` 브리지. ‼ 필수. **‼ DOTween 임포트(§아래 `- [ ] DOTween: Asset Store ...`)를 먼저 끝낸 뒤에 켤 것** — 순서 어기면 CS0246 로 에디터가 안 열린다(트러블슈팅 참고).
 - [ ] Assembly Version Validation = OFF (Player Settings, 커밋).
 - [ ] WebGL managedStrippingLevel = High(3), `stripEngineCode=1` 확인. link.xml 의 "Low" 주석 → "High(3)" 정정.
 - [ ] `link.xml` **append**(신규 생성/덮어쓰기 금지) — `Templates~/link.xml` 항목 추가.
@@ -65,6 +65,13 @@ Unity 6000.3.16f1 테스트 프로젝트(`file:../../` 로 패키지 로컬 참�
 - [ ] DOTween — Pause(timeScale=0) 페이드(`.SetUpdate(true)`), AOT(커스텀 struct tween 금지, float/Color/Vector 만).
 - [ ] Addler — 풀 + BindTo 로드, 카탈로그 초기화 후 자동 link.xml 커버.
 - [ ] CSV — 경량 `CsvTable` 로드(v1.0.0). CsvCSharp 소스젠 IL2CPP 생존은 v1.0.1 별도 게이트.
+
+## 트러블슈팅
+- **에디터가 실행 직후 에러/컴파일 실패로 안 열림 + `error CS0246: ... 'DG' / 'Tween' / 'TweenCallback'` (`UniTask/.../External/DOTween/DOTweenAsyncExtensions.cs`)**
+  → **원인:** `UNITASK_DOTWEEN_SUPPORT` define 가 켜져 있는데 DOTween 이 아직 임포트되지 않음(순서 역전). 그 파일은 `#if UNITASK_DOTWEEN_SUPPORT` 로만 감싸져 있어 define 만 있으면 DOTween 타입을 찾다 실패 → 전체 스크립트 로드 붕괴.
+  → **즉시 복구:** 에디터 종료 상태에서 `ProjectSettings/ProjectSettings.asset` 의 `scriptingDefineSymbols` 4개 타깃(Android/Standalone/WebGL/iPhone)에서 `UNITASK_DOTWEEN_SUPPORT` 제거(`USN_USE_ASYNC_METHODS` 는 유지) → 재실행. `Unity -batchmode -quit -nographics -projectPath <경로>` ExitCode 0 로 검증 가능.
+  → **정상화:** DOTween 임포트(README §2) 완료 후 4개 타깃에 `UNITASK_DOTWEEN_SUPPORT` 재추가.
+  → **재발 방지:** define 은 **DOTween 임포트 뒤에만** 켠다(위 §M0 체크리스트 순서).
 
 ## 완료 시
 - [ ] `packages-lock.json` 커밋(해시 핀).

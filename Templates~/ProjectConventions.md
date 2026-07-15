@@ -49,7 +49,7 @@
 ## 패키지 설치 시 필수 define & 함정 (v1.0.0 실측)
 
 - **`USN_USE_ASYNC_METHODS`** (전 타깃 define, 필수): USN 라이프사이클을 `Task` 반환으로 전환(미설정 시 `IEnumerator` 코루틴). 뷰 오버라이드는 `public override async Task Initialize()`; 진입 애니메이션은 await 가능한 `WillPushEnter`(Task)에서 — `DidPushEnter`는 `void`(동기). async Task 본문에서 UniTask(`.ToUniTask()`)를 await할 수 있음.
-- **`UNITASK_DOTWEEN_SUPPORT`** (전 타깃 define, 필수): DOTween(raw DLL)은 UniTask versionDefine 자동감지가 안 되므로 이 define로 `Tween.ToUniTask()` 확장을 켬.
+- **`UNITASK_DOTWEEN_SUPPORT`** (전 타깃 define, 필수): DOTween(raw DLL)은 UniTask versionDefine 자동감지가 안 되므로 이 define로 `Tween.ToUniTask()` 확장을 켬. **‼ 순서 주의:** 이 define는 **DOTween을 실제 임포트한 뒤에만** 켤 것. DOTween 없이 켜면 UniTask의 `DOTweenAsyncExtensions.cs`가 `DG`/`Tween`/`TweenCallback` 미해결로 CS0246 컴파일 실패 → 스크립트 로드 붕괴로 에디터가 실행 즉시 안 열림. (복구: 에디터 끈 채 `ProjectSettings.asset` 4개 타깃에서 이 define 제거 → 열기 → DOTween 임포트 → 재추가.)
 - **Assembly Version Validation = OFF** / **WebGL managedStrippingLevel = High(3)** / **link.xml append**(덮어쓰기 금지). 자세히 → `Documentation~/M0_EDITOR_KICKOFF.md`.
 
 # 코드 가이드라인 및 컨벤션
