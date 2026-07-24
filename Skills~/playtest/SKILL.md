@@ -1,14 +1,14 @@
 ---
 name: playtest
-description: Use to run coordinate-based play-mode tests on a Unity game via unity-exec — capture the screen, locate uGUI elements, tap/drag at coordinates, and verify results. Can emit a verification report folder (annotated screenshots + non-visual data probes + report.md). Trigger on "이 화면에서 X 눌러 Y 되는지 확인", "UI 동작 테스트", "팝업 열리는지 봐줘", "버튼 눌러봐", "검증 리포트 만들어", "모션 나왔는지 확인", or play-testing a uGUI flow.
+description: Use to run coordinate-based play-mode tests on a Unity game via the official Unity CLI — capture the screen, locate uGUI elements, tap/drag at coordinates, and verify results. Can emit a verification report folder (annotated screenshots + non-visual data probes + report.md). Trigger on "이 화면에서 X 눌러 Y 되는지 확인", "UI 동작 테스트", "팝업 열리는지 봐줘", "버튼 눌러봐", "검증 리포트 만들어", "모션 나왔는지 확인", or play-testing a uGUI flow.
 ---
 
 # Playtest (좌표 기반 Play Mode 자동 테스트)
 
-unity-exec로 게임 화면을 **캡쳐 → 이해 → 좌표 터치/입력 → 결과 관찰**하는 루프. uGUI 경로는 0 풋프린트(C# 템플릿 POST)로 동작한다. Claude가 스크린샷을 보고 자연어 의도를 좌표로 변환해 구동한다.
+공식 Unity CLI(`unity command`, com.unity.pipeline)로 게임 화면을 **캡쳐 → 이해 → 좌표 터치/입력 → 결과 관찰**하는 루프. uGUI 경로는 0 풋프린트(C# 템플릿 eval)로 동작한다. Claude가 스크린샷을 보고 자연어 의도를 좌표로 변환해 구동한다.
 
-> 이 문서는 **자족적**이다 — 이 SKILL.md + scripts/ 만으로 uGUI 테스트 전체가 동작한다(메모리/PKM 불필요).
-> 전송수단은 파운데이션 번들 `unity-editor-ops`(unity-exec) 스킬을 재사용한다.
+> 이 문서는 **자족적**이다 — 이 SKILL.md + scripts/(자체 전송 `_cli.sh` 포함) + 공식 Unity CLI 만으로 uGUI 테스트 전체가 동작한다(메모리/PKM 불필요).
+> 전송·규약은 [unity-cli] 스킬 참고(공식 Unity CLI `unity command` + com.unity.pipeline).
 
 ## When to use
 - uGUI UI 동작 검증(화면 전환·팝업·버튼·HUD 등).
@@ -19,7 +19,7 @@ unity-exec로 게임 화면을 **캡쳐 → 이해 → 좌표 터치/입력 → 
 - **비-uGUI 월드 입력**(EventSystem 밖 게임 자체 입력 읽기): 게임별 입력 어댑터가 필요 → 아래 "월드 입력" 참고.
 
 ## 전제
-- unity-exec 실행 중(미실행 시 `unity-editor-ops/scripts/launch.sh`).
+- 에디터 + Pipeline 서버 실행 중(확인 `unity status`; 미실행 시 콜드스타트 `unity open <projectPath>`).
 - **tap/drag/introspect는 Play Mode 필요**(런타임 `EventSystem`). capture는 edit/play 모두.
 - 에디터가 포커스를 잃으면 Play Mode가 종료될 수 있음 → `playmode.sh on`으로 재진입.
 
@@ -66,8 +66,8 @@ unity-exec로 게임 화면을 **캡쳐 → 이해 → 좌표 터치/입력 → 
 - 좌표 `tap`은 **EventSystem 핸들러(IPointerClickHandler 등)를 거치는 것**에만 작동(Button/커스텀).
 - **비-uGUI game-touch 요소** → 좌표 탭 NO_HIT → 위 "월드 입력" 어댑터 패턴.
 - **팝업/딤 중첩** 시 좌표 탭이 딤에 맞을 수 있음(raycast sort 순서) → **`tapname.sh <이름조각>`** 으로 해당 요소 직접 클릭.
-- Play 진입 시 도메인 리로드로 unity-exec 잠깐 끊김 → `playmode.sh`가 재연결 폴링.
-- 긴 인라인 C#은 unity-exec 보안정책 namespace-유사 패턴 오검출 주의(스크립트는 검증된 템플릿 사용).
+- Play 진입 시 도메인 리로드로 Pipeline 서버 잠깐 끊김 → `playmode.sh`가 재연결 폴링.
+- 긴/멀티라인 C#은 `_cli.sh`의 `ev`(내부적으로 `unity command eval`)로 — 셸 따옴표 이스케이프 주의(스크립트는 검증된 템플릿 사용). eval은 샌드박스가 없으니 파괴적 API 주의.
 
 ## Scripts
 - `scripts/playmode.sh on|off` — Play 진입/종료 + 재연결 폴링
@@ -81,5 +81,8 @@ unity-exec로 게임 화면을 **캡쳐 → 이해 → 좌표 터치/입력 → 
 - `scripts/annotate.sh <in> <out> [--tap x y] [--arrow x1 y1 x2 y2] [--label "txt"]` — 스샷 빨간 표기(PIL 필요, 좌표 y-up 자동 변환)
 - `scripts/probe.sh --standard | "<C#>"` — 비시각 데이터 프로브(scene·isPlaying·Animator·파티클 / 임의 C#) → `.data` JSON
 
-포트/토큰/JSON 처리는 파운데이션 번들 `unity-editor-ops/scripts/uexec.sh`·`resolve-port.sh` 재사용.
+에디터 전송은 `scripts/_cli.sh`(공식 Unity CLI `unity command` 래퍼: `ev`/`ucmd`/`estate`) — 자족적, 크로스 스킬 의존 없음.
 `annotate.py`는 Python3 + Pillow(PIL) 필요(`pip install Pillow`).
+
+## 인게임 자동 플레이 (실입력) — 게임별 레시피
+봇/치트가 아니라 **실제 입력 경로**로 스테이지를 자동 진행(각도 결정 → 좌표 역산 → 위 월드 입력 어댑터로 발사)하려면 게임의 전략·입력·씬 흐름에 결합된 어댑터가 필요하다. 이 부분은 파운데이션이 코어로 싣지 않고 **레시피 + 템플릿**으로 제공한다 → `references/world-input-and-autoplay.md` + `references/autoplay_turn.sh.txt`(게임에 맞게 채워 `scripts/` 로 옮겨 사용).

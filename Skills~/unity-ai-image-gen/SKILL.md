@@ -2,17 +2,17 @@
 name: unity-ai-image-gen
 description: >-
   Unity AI(내장 Generators)로 프로젝트 안에 이미지/스프라이트/아이콘/텍스처/컨셉아트를 코드로 생성한다.
-  Claude 가 실행 중인 Unity 에디터를 unity-exec 로 구동해 자동 생성·저장한다.
+  Claude 가 실행 중인 Unity 에디터를 공식 Unity CLI 로 구동해 자동 생성·저장한다.
   사용자가 "이미지 만들어줘", "스프라이트 생성", "아이콘 뽑아줘", "버블/캐릭터 아트 만들어",
   "이 이미지 참고해서 비슷하게", "플레이스홀더 아트 필요해", "generate a sprite/icon/texture",
   "concept art" 등 에셋 이미지를 만들고자 하면 — 명시적으로 'Unity AI' 를 말하지 않아도 — 이 스킬을 사용한다.
   특히 기존 프로젝트 이미지를 참고(reference)하거나 기존 에셋 크기에 맞춰야 할 때 적합하다.
   (코드/로직 작성, 기존 이미지 단순 편집·리네이밍, 이미지 읽기/분석만 하는 요청에는 쓰지 않는다.)
 compatibility: >-
-  의존 스킬 'unity-editor-ops' (com.hwi.foundation 에 번들된 unity-exec 전송수단).
-  scripts/uai.sh 는 ../../unity-editor-ops/scripts 의 resolve-port.sh / uexec.sh / ucompile.sh / launch.sh 를 재사용한다.
+  공식 Unity CLI(`unity` 바이너리 + com.unity.pipeline 패키지) 필요.
+  scripts/uai.sh 는 자체 CLI 전송(`unity command eval`)을 내장하며 프로젝트 루트 기준으로 동작한다.
   구동 하네스 AiGenProbe 는 com.hwi.foundation 패키지 Editor/AiGenProbe/ 에 번들됨(별도 설치 불필요).
-  playtest 스킬과 동일하게 unity-exec 위에서 독립적으로 공존하는 별도 스킬이다.
+  공통 CLI 사용법·규약은 unity-cli 스킬 참고. playtest 스킬과 동일하게 CLI 위에서 독립적으로 공존하는 별도 스킬이다.
 ---
 
 # unity-ai-image-gen
@@ -28,7 +28,7 @@ compatibility: >-
 - Unity 6.2+ (검증: 6.3 / `com.unity.ai.assistant`).
 - **`com.unity.ai.generators` 패키지를 따로 설치하지 말 것** — assistant 가 Generators 를 내장하므로 별도 설치 시 어셈블리 중복으로 컴파일이 깨진다.
 - 1회성 수동 설정(코드로 불가): ① AI 메뉴 약관 동의 ② 프로젝트를 Unity Cloud 프로젝트에 링크 ③ 포인트(크레딧) 잔량.
-- Unity 에디터가 떠 있어야 한다(unity-exec 인스턴스 필요). 없으면 사용자에게 `.claude/skills/unity-editor-ops/scripts/launch.sh` 안내.
+- Unity 에디터 + Pipeline 서버가 떠 있어야 한다(확인 `unity status`). 없으면 콜드스타트 `unity open <projectPath>` 안내.
 
 ## 비용 확인 정책 (운영 규칙)
 
@@ -137,9 +137,9 @@ compatibility: >-
 - 이 경로는 **Unity 비공개 internal API + pre-release** 다. 패키지 업데이트로 타입/필드명이 바뀌면 하네스가 깨질 수 있다.
   `gen`/`models` 가 `NO_PROBE` 나 reflection 예외를 내면 먼저 `ensure` 재실행 → 그래도 실패면 `references/api-and-caveats.md` 의 API 표면과 실제 어셈블리를 대조해 패키지의 `Editor/AiGenProbe/AiGenProbe.cs` 를 갱신한다.
 - cost 는 `GEN:STARTED cost=` 로 보고된다(비용 확인은 위 "비용 확인 정책" 참고).
-- `scripts/uai.sh` 는 cwd=프로젝트 루트, 그리고 `unity-editor-ops` 스킬(resolve-port/uexec/ucompile)이 옆에 있다고 가정한다.
+- `scripts/uai.sh` 는 자체 CLI 전송(`unity command eval`/`recompile`)을 내장하며, 공식 Unity CLI(`~/.unity/bin/unity`)와 프로젝트 루트를 가정한다.
 
 ## 참고
 
-- `references/api-and-caveats.md` — internal API 표면, 모델 목록 성격, unity-exec 비자명 동작.
+- `references/api-and-caveats.md` — internal API 표면, 모델 목록 성격, CLI 전송(`unity command`) 비자명 동작.
 - `claudedocs/unity-ai-image-generation.md` — 발견 경위·검증 결과 상세.

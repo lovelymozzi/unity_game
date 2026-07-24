@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# TEMPLATE — 인게임 자동 플레이 한 턴 (실입력). 게임에 맞게 <...> 부분을 채운 뒤
+# 확장자 .txt 를 떼고 scripts/autoplay_turn.sh 로 옮겨 사용한다.
+# 전제: 월드 입력 어댑터가 이미 스왑돼 있고 Play Mode 진입 상태(references/world-input-and-autoplay.md 참고).
+#
+# 사용: autoplay_turn.sh <RUNDIR> <turnNo> [strategy]
+# 출력 토큰: TURN<n> OK | GAMEEND | NEEDS_ATTENTION | SELFCHECK_FAIL | ERR
+set -euo pipefail
+. "$(cd "$(dirname "$0")" && pwd)/_cli.sh"
+
+RUNDIR="${1:?usage: autoplay_turn.sh <RUNDIR> <turnNo> [strategy]}"
+N="${2:?turnNo}"
+STRAT="${3:-default}"
+
+# 1) 턴 준비 확인 --------------------------------------------------------------
+STATE="$(ev 'return <게임이 입력 대기 상태인지 판별하는 C#; 예: gameState.ToString()>;')"
+case "$STATE" in
+  *<TURN_READY 토큰>*) : ;;
+  *<GAME_END 토큰>*)   echo "TURN$N GAMEEND"; exit 0 ;;
+  *) echo "TURN$N NEEDS_ATTENTION state=$STATE"; exit 0 ;;
+esac
+
+# 2) 결정 (발사 X, 파라미터만) — 완전 동기 전략을 쓸 것 --------------------------
+DEC="$(ev 'var gl = <게임 로직 인스턴스>;
+           var dec = new <StrategyClass>().GetShotDecision(gl);
+           return dec.<Angle> + "," + dec.<Swap>;')"
+ANGLE="${DEC%%,*}"
+
+# 3) 각도 → 화면좌표 역산 + 자체검증 ------------------------------------------
+POS="$(ev '<angle=ANGLE 를 shooter+R*(cosθ,sinθ) → Camera.WorldToScreenPoint 로 역산;
+           역변환이 원 각도와 일치하면 "x,y" 아니면 "SELFCHECK_FAIL" 반환>;')"
+[ "$POS" = "SELFCHECK_FAIL" ] && { echo "TURN$N SELFCHECK_FAIL angle=$ANGLE"; exit 0; }
+X="${POS%%,*}"; Y="${POS##*,}"
+
+# 4) 실입력 발사 (월드 입력 어댑터) -------------------------------------------
+ev "SimulatedInputHandler.SimPosition = new UnityEngine.Vector2(${X}f, ${Y}f); SimulatedInputHandler.SimTouchType = <TouchType.DOWN>; return \"down\";" >/dev/null
+sleep 0.4
+ev "SimulatedInputHandler.SimTouchType = <TouchType.MOVE>; return \"move\";" >/dev/null
+sleep 0.8
+ev "SimulatedInputHandler.SimTouchType = <TouchType.UP>;   return \"up\";"   >/dev/null
+ev "SimulatedInputHandler.SimTouchType = <TouchType.NONE>; return \"none\";" >/dev/null
+
+# 5) 관찰/로깅 ---------------------------------------------------------------
+sleep 1
+OBS="$(./"$(dirname "$0")"/probe.sh --standard 2>/dev/null || true)"
+[ -n "$RUNDIR" ] && ./"$(dirname "$0")"/logstep.sh "$RUNDIR" "$N" "shoot angle=$ANGLE" "$STATE" "$OBS" >/dev/null 2>&1 || true
+
+echo "TURN$N OK angle=$ANGLE"

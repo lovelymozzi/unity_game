@@ -5,11 +5,10 @@
   "description": "Hwi의 Unity 6 신규 프로젝트 파운데이션. v1.0.0: thin adopt/bootstrap — 검증 라이브러리(R3·Addler·USN·LucidAudio·DOTween)를 네이티브 API로 직접 채택하고, 파운데이션은 설치·초기화·컨벤션·스캐폴딩만 제공. 유지 모듈: Core + Pool + UI + Mobile + Async + Scene + Logging + Assets + Save + Localization + Input. (Audio/Events/Popup 폐기 — 각각 LucidAudio/R3/USN 직접.)",
   "unity": "6000.0",
   "author": { "name": "Hwijung Park", "email": "hwijung-park@linecorp.com" },
-  "keywords": ["foundation","mobile","object-pool","ui","safearea","orthographic","async","unitask","scene","logging","assets","addressables","save","localization","input","r3","dotween","unity-screen-navigator","lucid-audio","addler","bootstrap","convention","editor-exec","unity-exec"],
+  "keywords": ["foundation","mobile","object-pool","ui","safearea","orthographic","async","unitask","scene","logging","assets","addressables","save","localization","input","r3","dotween","unity-screen-navigator","lucid-audio","addler","bootstrap","convention","unity-cli","unity-pipeline"],
   "dependencies": {
     "com.unity.addressables": "2.9.1",
     "com.unity.inputsystem": "1.19.0",
-    "com.unity.nuget.newtonsoft-json": "3.2.1",
     "com.unity.2d.sprite": "1.0.0"
   },
   "samples": [

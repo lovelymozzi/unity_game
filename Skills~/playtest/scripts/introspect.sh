@@ -2,7 +2,7 @@
 # playtest: 활성 IPointerClickHandler 구현체(Button + 커스텀) 열거 → 좌표/타입/경로.
 # 좌표는 게임뷰 픽셀 공간(좌하단 원점). Play Mode 필요(EventSystem.current).
 set -euo pipefail
-UEXEC="$(cd "$(dirname "$0")/../../unity-editor-ops/scripts" && pwd)/uexec.sh"
+. "$(cd "$(dirname "$0")" && pwd)/_cli.sh"
 read -r -d '' CODE <<'CS' || true
 var sb = new System.Text.StringBuilder();
 var es = UnityEngine.EventSystems.EventSystem.current;
@@ -26,4 +26,4 @@ foreach (var mb in all) {
 }
 return sb.ToString();
 CS
-"$UEXEC" "$CODE"
+ev "$CODE"

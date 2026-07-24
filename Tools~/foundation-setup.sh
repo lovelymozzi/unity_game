@@ -3,13 +3,13 @@
 #
 #   1) Templates~/ProjectConventions.md 내용을 <project>/CLAUDE.md 의
 #      <!-- hwi-foundation:start/end --> 마커 블록에 멱등 삽입/교체.
-#   2) Exec~/bootstrap.sh 로 unity-exec AI 스킬 + exec 안내 블록 설치(--skip-manifest).
+#   2) Skills~/bootstrap.sh 로 공식 Unity CLI 기반 AI 스킬(unity-cli·playtest·unity-ai-image-gen)
+#      설치 + <!-- hwi-unity-cli-skill:* --> 안내 블록 주입.
 #
-# exec 블록(<!-- unity-exec-skill:* -->)과 파운데이션 블록(<!-- hwi-foundation:* -->)은
-# 서로 독립된 마커 → 재실행/업스트림 재동기화 안전.
+# 두 마커 블록은 서로 독립 → 재실행/업스트림 재동기화 안전.
 #
 # 사용:
-#   bash Packages/com.hwi.foundation/Tools~/foundation-setup.sh [<project-dir>] [--skip-exec] [--skip-conventions]
+#   bash Packages/com.hwi.foundation/Tools~/foundation-setup.sh [<project-dir>] [--skip-skills] [--skip-conventions]
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -17,12 +17,10 @@ PKG_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 PROJECT_DIR="${1:-$PWD}"
 case "${1:-}" in --*) PROJECT_DIR="$PWD" ;; esac
-SKIP_EXEC=false
 SKIP_CONVENTIONS=false
 SKIP_SKILLS=false
 for a in "$@"; do
   case "$a" in
-    --skip-exec) SKIP_EXEC=true ;;
     --skip-conventions) SKIP_CONVENTIONS=true ;;
     --skip-skills) SKIP_SKILLS=true ;;
   esac
@@ -81,38 +79,16 @@ else
   log "skip conventions (--skip-conventions)"
 fi
 
-if [[ "$SKIP_EXEC" == "false" ]]; then
-  if [[ -f "$PKG_DIR/Exec~/bootstrap.sh" ]]; then
-    log "installing unity-exec skill (Exec~/bootstrap.sh --skip-manifest)"
-    bash "$PKG_DIR/Exec~/bootstrap.sh" "$PROJECT_DIR" --skip-manifest
-  else
-    err "Exec~/bootstrap.sh not found — exec 스킬 설치 생략"
-  fi
-else
-  log "skip exec (--skip-exec)"
-fi
-
-# --- 추가 스킬 설치 (unity-ai-image-gen, playtest) ---
-install_skills() {
-  local src_root="$PKG_DIR/Skills~"
-  [[ -d "$src_root" ]] || { log "Skills~ 없음 — 추가 스킬 생략"; return; }
-  local dest_root="$PROJECT_DIR/.claude/skills"
-  mkdir -p "$dest_root"
-  local sk
-  for sk in "$src_root"/*/; do
-    [[ -d "$sk" ]] || continue
-    local name; name="$(basename "$sk")"
-    rm -rf "$dest_root/$name"
-    cp -R "$sk" "$dest_root/$name"
-    chmod +x "$dest_root/$name/scripts/"*.sh 2>/dev/null || true
-    log "installed skill: $name"
-  done
-}
-
+# --- AI 스킬 설치 (공식 Unity CLI 기반) — Skills~/bootstrap.sh 에 위임 ---
 if [[ "$SKIP_SKILLS" == "false" ]]; then
-  install_skills
+  if [[ -f "$PKG_DIR/Skills~/bootstrap.sh" ]]; then
+    log "installing Unity CLI AI skills (Skills~/bootstrap.sh)"
+    bash "$PKG_DIR/Skills~/bootstrap.sh" "$PROJECT_DIR"
+  else
+    err "Skills~/bootstrap.sh not found — AI 스킬 설치 생략"
+  fi
 else
   log "skip skills (--skip-skills)"
 fi
 
-log "done. CLAUDE.md = [hwi-foundation 블록] + [unity-exec 블록]. skills = unity-editor-ops + unity-ai-image-gen + playtest."
+log "done. CLAUDE.md = [hwi-foundation 블록] + [hwi-unity-cli-skill 블록]. skills = unity-cli + playtest + unity-ai-image-gen."

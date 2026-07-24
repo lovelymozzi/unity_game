@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# unity-ai-image-gen 구동기. Unity AI(internal AssetGenerators)를 unity-exec + AiGenProbe 리플렉션으로 구동.
+# unity-ai-image-gen 구동기. Unity AI(internal AssetGenerators)를 공식 Unity CLI(`unity command eval`) + AiGenProbe 리플렉션으로 구동.
 # 모든 비동기 작업은 fire-and-forget + EditorPrefs("AiGenProbe.Status") 폴링으로 완료를 감지한다.
 #
 # 사용:
@@ -17,21 +17,32 @@ set -euo pipefail
 
 SKILL_DIR="$(cd "$(dirname "$0")/.." && pwd)"            # .../.claude/skills/unity-ai-image-gen
 
-# 의존: unity-editor-ops 스킬(공용 unity-exec 전송수단). 없으면 친절히 실패한다.
-UEO_DIR="$(dirname "$0")/../../unity-editor-ops/scripts"
-if [[ ! -f "$UEO_DIR/uexec.sh" ]]; then
-  echo "의존 스킬 'unity-editor-ops' 를 찾을 수 없음 ($UEO_DIR)." >&2
-  echo "이 스킬은 unity-editor-ops 의 resolve-port/uexec/ucompile 스크립트를 재사용합니다." >&2
-  echo "unity-exec(com.linestudio.unity-exec) 패키지가 설치되어 .claude/skills/unity-editor-ops/ 가 있어야 합니다." >&2
-  exit 4
-fi
-UEO="$(cd "$UEO_DIR" && pwd)"                            # unity-editor-ops/scripts
-UEXEC="$UEO/uexec.sh"
-UCOMPILE="$UEO/ucompile.sh"
-RESOLVE="$UEO/resolve-port.sh"
+# --- 전송: 공식 Unity CLI (`unity command`, com.unity.pipeline) ---------------
+UNITY_BIN="${UNITY_BIN:-$HOME/.unity/bin/unity}"
+export UNITY_NO_BANNER=1
+UCLI_ROOT="${UCLI_ROOT:-$(cd "$(dirname "$0")/../../../.." && pwd)}"   # 프로젝트 루트
+UCLI_PP=(--project-path "$UCLI_ROOT")
 
-# --- exec 헬퍼 ---------------------------------------------------------------
-ex() { "$UEXEC" "$1" "" "${2:-60}"; }                    # ex "<csharp>" [timeout]
+# ex "<csharp>" [timeout] — 라이브 에디터에서 C# 실행(문장+return). 반환값(문자열/JSON) 출력, 실패 시 "ERR:...".
+ex() {
+  local out ok
+  out="$("$UNITY_BIN" command eval "${UCLI_PP[@]}" --timeout "${2:-60}" --format json "$1" 2>/dev/null)" || true
+  ok="$(printf '%s' "$out" | jq -r '.data.result.success // false' 2>/dev/null || echo false)"
+  if [ "$ok" = "true" ]; then printf '%s' "$out" | jq -r '.data.result.result // empty' 2>/dev/null || true
+  else printf 'ERR:%s\n' "$(printf '%s' "$out" | jq -r '((.data.result.diagnostics // [])|map(.id+" "+.message)|join("; ")) as $d| if ($d|length)>0 then $d else ((.errors//[])|tojson) end' 2>/dev/null || echo parse_failed)"; fi
+  return 0
+}
+# recompile_wait [maxPolls] — recompile 트리거 후 도메인리로드 관통 폴링(일시 에러 허용).
+recompile_wait() {
+  "$UNITY_BIN" command recompile "${UCLI_PP[@]}" >/dev/null 2>&1 || true
+  local i rs
+  for i in $(seq 1 "${1:-45}"); do
+    rs="$("$UNITY_BIN" command recompile_status "${UCLI_PP[@]}" --format json 2>/dev/null | jq -r '.data.result.status // "?"' 2>/dev/null || echo '?')"
+    case "$rs" in completed|up_to_date|idle) return 0;; esac
+    sleep 4
+  done
+  return 0
+}
 b64() { printf '%s' "${1:-}" | base64 | tr -d '\n'; }
 dec() { printf 'System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String("%s"))' "$1"; }
 
@@ -56,10 +67,9 @@ poll() {  # poll <DONE_substr> <ERR_substr> <timeout_sec>
 }
 
 need_editor() {
-  if ! "$RESOLVE" >/dev/null 2>&1; then
-    echo "Unity 에디터(인스턴스) 미감지. 먼저 띄우세요: $UEO/launch.sh" >&2
-    exit 3
-  fi
+  [ "$(ex 'return "ok";')" = "ok" ] && return 0
+  echo "Unity 에디터(Pipeline 서버) 미감지. 먼저 띄우세요: $UNITY_BIN open \"$UCLI_ROOT\" (또는 Unity Hub)." >&2
+  exit 3
 }
 
 # --- subcommands -------------------------------------------------------------
@@ -73,7 +83,7 @@ cmd_ensure() {
   #   2) 컴파일 에러(다른 스크립트) → 도메인 미완
   echo "AiGenProbe 미로드 — com.hwi.foundation 에 번들돼 있으나 컴파일 안 됨." >&2
   echo "  · com.unity.2d.sprite 설치 확인(asmdef 가 Unity.2D.Sprite.Editor 참조)" >&2
-  echo "  · 컴파일 에러 해소 후 재시도: ucompile.sh 로 상태 확인" >&2
+  echo "  · 컴파일 에러 해소 후 재시도: unity command recompile_status 로 상태 확인" >&2
   exit 1
 }
 

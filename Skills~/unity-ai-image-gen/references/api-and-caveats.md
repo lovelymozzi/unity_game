@@ -34,11 +34,11 @@ Task<IReadOnlyList<ModelInfo>> AssetGenerators.GetAvailableModelsAsync(bool incl
 ```
 전체·최신 목록은 `uai.sh models` 로 조회.
 
-## unity-exec 비자명 동작 (하네스가 이 구조를 쓰는 이유)
+## CLI eval 비자명 동작 (하네스가 이 구조를 쓰는 이유)
 
-1. exec 코드는 method body — statement + `return expr;`. 식만 나열하면 파싱 에러.
+1. `unity command eval` 코드는 method body — statement + `return expr;`. 식만 나열하면 파싱 에러.
 2. **`Task` 를 반환해도 await 하지 않고 직렬화만 함** → 비동기는 fire-and-forget + `EditorPrefs` 폴링.
-3. **`autoReferenced:false` 어셈블리(`AiGenProbe.Editor`) 타입은 exec 스니펫에서 안 보임** → `AppDomain...GetTypes()` 로 찾아 리플렉션 Invoke.
+3. **`autoReferenced:false` 어셈블리(`AiGenProbe.Editor`) 타입은 eval 스니펫에서 안 보임** → `AppDomain...GetTypes()` 로 찾아 리플렉션 Invoke.
 4. 셸에서 파일 mv/cp 후 `AssetDatabase.Refresh(ForceSynchronousImport)` → 재컴파일해야 새 스크립트가 인식됨.
 5. 인자(프롬프트·경로)는 base64 로 넘겨 C# 리터럴 이스케이프 문제를 회피(`uai.sh` 가 처리).
 

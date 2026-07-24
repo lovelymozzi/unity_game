@@ -2,6 +2,23 @@
 
 All notable changes to this package will be documented here. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning is [SemVer](https://semver.org/).
 
+## [Unreleased]
+
+### Changed (**Breaking** — AI 툴링)
+- **AI 에이전트 Unity 조작 전송수단을 사내 `unity-exec` → 공식 Unity CLI(`unity` 바이너리 + `com.unity.pipeline`)로 전환.** 사내 전용 서버 패키지 의존 제거, 스킬 이식성·범용성 향상.
+- `unity-editor-ops` 스킬 → **`unity-cli`**(프로젝트 스크립트 0, `unity command` 전송)로 대체.
+- `playtest`·`unity-ai-image-gen` 스킬: 전송만 CLI(`unity command eval`/`recompile`)로 교체, 명령 표면·게임 무관 일반화 유지. `playtest` 게임 종속 레이어(월드 입력·인게임 오토플레이)는 `references/` 레시피+템플릿으로 분리.
+
+### Removed
+- **`Editor/Exec/`** (vendored unity-exec HTTP 서버 9 .cs + asmdef `UnityExec.Editor`) + **`Exec~/`**(bootstrap.sh/unity-exec.sh/ClaudeSkill~). 참조처 0 확인 후 제거.
+- `Documentation~/VENDOR_UNITY_EXEC.md` — 벤더링 대상 소멸 → `Documentation~/AI_TOOLING.md`(공식 CLI 기반) 신설.
+- `package.json` keywords `editor-exec`/`unity-exec` → `unity-cli`/`unity-pipeline`.
+- **`package.json` 의존 `com.unity.nuget.newtonsoft-json`** — exec 서버 전용이었고 패키지 코드 사용처 0(Save 는 `UnityEngine.JsonUtility`), Addressables 2.9.1·2d.sprite·inputsystem 모두 비의존(실측) → 제거.
+
+### Notes
+- 신규 스킬 설치기 `Skills~/bootstrap.sh`(+ `Tools~/foundation-setup.sh` 위임). 가이드 블록 마커 `<!-- hwi-unity-cli-skill:* -->`(컨벤션 블록과 독립).
+- 공식 `unity` CLI 는 머신 1회 셋업 필요(`install.sh` + `unity auth login` + `unity pipeline install`). `com.unity.pipeline`·CLI 는 Unity experimental — 명령 표면 변동 가능.
+
 ## [1.0.0] — 2026-07-08
 
 thin adopt/bootstrap 파운데이션 기준선. 모듈 제거 + 역할 전환 = **대규모 breaking → v1.0.0 승격**.

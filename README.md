@@ -112,37 +112,42 @@ CsvCSharp + NuGetForUnity 는 **v1.0.1 로 이월**(Unsafe 4중충돌·AOT 미�
    ```bash
    bash Packages/com.hwi.foundation/Tools~/foundation-setup.sh "$PWD"
    ```
-   → `CLAUDE.md` 에 **[hwi-foundation 블록]**(개발환경·패키지 규칙·컨벤션·출력요구사항, `ProjectConventions.md` 기반) + **[unity-exec 블록]**을 각각 독립 마커로 멱등 주입 + `.claude/skills/` 에 스킬 3종(`unity-editor-ops`·`playtest`·`unity-ai-image-gen`) 설치. 재실행/재동기화 안전. (개별 제어: `--skip-exec` / `--skip-conventions` / `--skip-skills`.)
+   → `CLAUDE.md` 에 **[hwi-foundation 블록]**(개발환경·패키지 규칙·컨벤션·출력요구사항, `ProjectConventions.md` 기반) + **[hwi-unity-cli-skill 블록]**을 각각 독립 마커로 멱등 주입 + `.claude/skills/` 에 스킬 3종(`unity-cli`·`playtest`·`unity-ai-image-gen`) 설치. 재실행/재동기화 안전. (개별 제어: `--skip-conventions` / `--skip-skills`.)
    - 수동 대안: `cp Templates~/ProjectConventions.md <project>/CLAUDE.md` (단일 출처를 직접 복사).
 2. `Templates~/Scaffold/*.cs.txt` → `Assets/Scripts/` 로 복사 후 `.cs` 로 확장자 변경. 4계층(DataManager/Core-Manager/Controller-Object/UI-View) 시작 코드 + 샘플 CSV. 자세히 → `Templates~/Scaffold/README.md`.
 3. `Templates~/manifest.snippet.json`, `Templates~/link.xml` — 위 설치 계약 참조.
 
-## Editor Exec (번들 — AI 에이전트 Unity 조작)
+## AI 에이전트 Unity 조작 — 공식 Unity CLI
 
-파운데이션에 **Unity Editor C# 실행 서버 + AI 스킬**이 번들돼 있다(`Editor/Exec/` + `Exec~/`). 별도 패키지 설치 없이 `com.hwi.foundation` 하나로 AI 에이전트(Claude Code 등)가 에디터를 조작·검증할 수 있다.
+파운데이션은 AI 에이전트(Claude Code 등)가 Unity 에디터를 조작·검증·생성하도록 **공식 Unity CLI**(`unity` 바이너리 + `com.unity.pipeline` 패키지) 기반 스킬을 번들한다. 사내 exec 서버·토큰·포트 없이 Unity 공식 도구만 쓴다.
 
-- **자동 기동:** 에디터를 열면 exec HTTP 서버가 `[InitializeOnLoad]` 로 시작(베이스 포트 8090, 점유 시 폴백). 토큰 인증·화이트리스트·감사 로그 포함.
-- **AI 스킬 설치:** `Tools~/foundation-setup.sh`(§신규 프로젝트 스캐폴드 1번)가 컨벤션 주입과 함께 자동 처리. exec 만 따로:
+- **전송수단:** 임베드 서버 없음. 실행 중인 에디터를 공식 CLI `unity command`(Pipeline 서버)로 구동한다.
+- **AI 스킬 설치:** `Tools~/foundation-setup.sh`(§신규 프로젝트 스캐폴드 1번)가 컨벤션 주입과 함께 자동 처리. 스킬만 따로:
   ```bash
-  bash Packages/com.hwi.foundation/Exec~/bootstrap.sh "$PWD" --skip-manifest
+  bash Packages/com.hwi.foundation/Skills~/bootstrap.sh "$PWD"
   ```
-  `.claude/skills/unity-editor-ops/` + `CLAUDE.md` 의 `<!-- unity-exec-skill:* -->` 블록 설치. `--skip-manifest` = exec 가 파운데이션에 번들이므로 manifest git 의존 추가 불필요.
-- **(1회·필수) Interaction Mode = No Throttling** (`Unity ▸ Settings ▸ General`) — 안 하면 exec 요청이 심하게 지연.
-- ⚠ **표준 `com.linestudio.unity-exec` 를 동시에 설치하지 말 것** — asmdef `UnityExec.Editor` 중복 → 컴파일 붕괴. 번들본만 사용.
-- 의존: `com.unity.nuget.newtonsoft-json`(package.json 에 선언됨).
-- 출처: LINE Studio `unity-exec-cli` @ `51c764b` 를 verbatim vendoring(원본 무수정). 재동기화 절차 → `Documentation~/VENDOR_UNITY_EXEC.md`.
+  `.claude/skills/{unity-cli,playtest,unity-ai-image-gen}/` + `CLAUDE.md` 의 `<!-- hwi-unity-cli-skill:* -->` 블록 설치.
+- **(머신 1회) 공식 CLI 셋업** — 프로젝트마다 반복 X:
+  ```bash
+  curl -fsSL https://public-cdn.cloud.unity3d.com/hub/prod/cli/install.sh | UNITY_CLI_CHANNEL=beta bash
+  unity auth login            # 브라우저 로그인 (사람 1회)
+  unity pipeline install      # 프로젝트 열고 com.unity.pipeline(experimental) 설치
+  unity status --format json  # 확인
+  ```
+- ⚠ `com.unity.pipeline` · `unity` CLI 는 Unity **베타/experimental** — 명령 표면이 바뀔 수 있다.
+- 상세: `Documentation~/AI_TOOLING.md`.
 
-## 번들 AI 스킬 (unity-exec 위에서 동작)
+## 번들 AI 스킬 (공식 Unity CLI 위에서 동작)
 
-`Tools~/foundation-setup.sh` 가 `.claude/skills/` 에 함께 설치하는 스킬(전부 번들 exec 재사용):
+`Tools~/foundation-setup.sh` / `Skills~/bootstrap.sh` 가 `.claude/skills/` 에 설치하는 스킬:
 
 | 스킬 | 용도 | opt-in 전제 |
 |---|---|---|
-| `unity-editor-ops` | exec C# 실행/컴파일 검증(전송수단) | — |
-| `playtest` | 좌표 기반 uGUI Play Mode 테스트 + 검증 리포트 | `annotate.py` 는 Python3 + Pillow(`pip install Pillow`). 비-uGUI 월드 입력은 게임별 어댑터(스킬 문서의 일반 패턴). |
+| `unity-cli` | 에디터 구동·검증·조작(전송수단 정본, 스크립트 0) | 공식 `unity` CLI + `com.unity.pipeline`(위 머신 1회 셋업). |
+| `playtest` | 좌표 기반 uGUI Play Mode 테스트 + 검증 리포트 | `annotate.py` 는 Python3 + Pillow(`pip install Pillow`). 비-uGUI 월드 입력·인게임 오토플레이는 게임별 레시피/템플릿(`playtest/references/`). |
 | `unity-ai-image-gen` | Unity AI(내장 Generators)로 이미지/스프라이트/오디오/애니 생성 | **Unity AI Generators**(`com.unity.ai.assistant` 내장) + AI 약관 동의 · Unity Cloud 링크 · 포인트. 하네스 `AiGenProbe` 는 패키지 `Editor/AiGenProbe/` 번들(‼ `com.unity.2d.sprite` 의존 — package.json 선언됨). |
 
-> playtest/unity-ai-image-gen 은 ShootGame 특화부를 제거한 **일반화 버전**이다. 원본은 `com.linestudio.unity-exec` 전송수단 가정이었으나 여기선 파운데이션 번들 exec 를 쓴다.
+> playtest/unity-ai-image-gen 은 게임 특화부를 제거한 **일반화 버전**이며, 전송수단은 공식 Unity CLI(`unity command`)다. 이전 unity-exec(사내 HTTP 서버) 의존은 제거됐다.
 
 ## SpriteRenderer · Orthographic 규약
 

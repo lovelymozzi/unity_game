@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
-# playtest: 안 보이는 데이터(모션/데이터 흐름) 프로브. uexec로 C# 조회 → .data(JSON) 반환.
+# playtest: 안 보이는 데이터(모션/데이터 흐름) 프로브. eval로 C# 조회 → 반환값(JSON).
 # 사용:
-#   probe.sh --standard         표준 세트(scene, isPlaying, 재생중 Animator, 활성 ParticleSystem)
-#   probe.sh "<C# 식/문 + return>"  임의 조회 (게임 특정 상태/데이터는 여기서)
+#   probe.sh --standard         게임 무관 표준 세트(scene, isPlaying, 재생중 Animator, 활성 ParticleSystem)
+#   probe.sh "<C# 식/문 + return>"  임의 조회 (게임 고유 상태/재화/상태머신 등은 이 형태로 프로젝트에 맞게)
 set -euo pipefail
-DIR="$(cd "$(dirname "$0")/../../unity-editor-ops/scripts" && pwd)"
-UEXEC="$DIR/uexec.sh"
+. "$(cd "$(dirname "$0")" && pwd)/_cli.sh"
 
 if [[ "${1:---standard}" == "--standard" ]]; then
   read -r -d '' CODE <<'CS' || true
@@ -34,9 +33,9 @@ else
   CODE="$1"
 fi
 
-RESP="$("$UEXEC" "$CODE")"
+RESP="$(ev "$CODE")"
 if command -v jq >/dev/null 2>&1; then
-  echo "$RESP" | jq '.data // .'
+  echo "$RESP" | jq . 2>/dev/null || echo "$RESP"
 else
   echo "$RESP"
 fi

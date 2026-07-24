@@ -8,7 +8,7 @@
 
 ---
 
-## ✅ 실측 검증 완료 (2026-07-08, canonical repo `TestProject~/`, unity-exec)
+## ✅ 실측 검증 완료 (2026-07-08, canonical repo `TestProject~/`)
 
 Unity 6000.3.16f1 테스트 프로젝트(`file:../../` 로 패키지 로컬 참조)에서 아래까지 **에디터 컴파일 green** 확인:
 - **패키지 해석 + 5종 라이브러리 + 11 foundation asmdef 컴파일 green** (errorCount 0). R3 1.3.1(+org.nuget.r3)·Addler·USN 1.7.5·LucidAudio 1.0.1·UniTask 2.5.11 + DOTween(공식 Demigiant 6000.3 소스).
