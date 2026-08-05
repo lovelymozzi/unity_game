@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 772e9e4ed48d8ba44998a056bed08379
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Animations/Clips/Watering.anim
+  uploadId: 852870

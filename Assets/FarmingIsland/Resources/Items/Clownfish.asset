@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6e472784d67b7444b196dcf99e468d5, type: 3}
+  m_Name: Clownfish
+  m_EditorClassIdentifier: 
+  itemId: Clownfish
+  price: 2000
+  icon: {fileID: 21300000, guid: b41eb23592a207a46b40c542169833e5, type: 3}
+  drop: {fileID: 3575081012492139461, guid: 7cf5a2c1ad8dc6c4c81da5cb4e2eb3c1, type: 3}

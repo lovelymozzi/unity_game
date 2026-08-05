@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: d5d1e35f3ec615746a905596a4e51bf9
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Fish/Goldfish.prefab
+  uploadId: 852870

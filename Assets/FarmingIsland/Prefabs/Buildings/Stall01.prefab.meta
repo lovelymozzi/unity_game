@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 9720358fc564f6048ae791c23b7d1707
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Buildings/Stall01.prefab
+  uploadId: 852870

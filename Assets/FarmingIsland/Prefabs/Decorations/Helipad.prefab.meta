@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 82686e854be0db4498dad267845a2f21
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Decorations/Helipad.prefab
+  uploadId: 852870

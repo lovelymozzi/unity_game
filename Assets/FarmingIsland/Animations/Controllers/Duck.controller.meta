@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 98bcbc6a5cce7004b8dcc1f40b739d6d
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Animations/Controllers/Duck.controller
+  uploadId: 852870

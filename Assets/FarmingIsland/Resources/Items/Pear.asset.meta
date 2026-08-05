@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 36035301911081f44a0dfd92016a62d2
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Resources/Items/Pear.asset
+  uploadId: 852870

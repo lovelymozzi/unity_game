@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 9a9ca99baa420db4db341f12c59fcdcf
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/Plugins/UI/SlicedFilledImage.cs
+  uploadId: 852870

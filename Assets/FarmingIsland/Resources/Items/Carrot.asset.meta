@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 270aa91f2c5aa5f46be71e84c44bb0d2
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Resources/Items/Carrot.asset
+  uploadId: 852870

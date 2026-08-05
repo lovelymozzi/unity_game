@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 80e8a36fdde0a9e4092e37912887cfbc
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Items/GreenApple.prefab
+  uploadId: 852870

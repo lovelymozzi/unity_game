@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6e472784d67b7444b196dcf99e468d5, type: 3}
+  m_Name: Egg_Ostrich
+  m_EditorClassIdentifier: 
+  itemId: Egg_Ostrich
+  price: 300
+  icon: {fileID: 21300000, guid: 83ca688ba78235248898aeccdcda379f, type: 3}
+  drop: {fileID: 5439251189511200300, guid: c6031f038f07f5044974692563520705, type: 3}

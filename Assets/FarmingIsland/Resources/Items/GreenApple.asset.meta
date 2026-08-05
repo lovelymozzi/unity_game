@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 90c35feb297a30149b1362ae8c504cab
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Resources/Items/GreenApple.asset
+  uploadId: 852870

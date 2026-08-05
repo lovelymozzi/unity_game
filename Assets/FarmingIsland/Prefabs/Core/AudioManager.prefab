@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2319058403651667306
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2319058403651667304}
+  - component: {fileID: 2319058403651667305}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2319058403651667304
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2319058403651667306}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2319058403651667305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2319058403651667306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b0317414f8d9094ea7c27d5ad48804b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioMixer: {fileID: 24100000, guid: 4685000daaf8f14478699e589b15b0ac, type: 2}
+  _BGMMixerGroup: {fileID: -7200073449591079900, guid: 4685000daaf8f14478699e589b15b0ac,
+    type: 2}
+  _SFXMixerGroup: {fileID: 9111127991319316412, guid: 4685000daaf8f14478699e589b15b0ac,
+    type: 2}
+  defaultBGMVolume: 0.5
+  fadeDuration: 0.75
+  minPlayRate: 0.05
+  SFXList:
+  - id: 0
+    clip: {fileID: 8300000, guid: 5b68593cf7acf534ea9f237aa6fe4e1a, type: 3}
+  - id: 1
+    clip: {fileID: 8300000, guid: f14b4c21542980943af05e0a5ec734d4, type: 3}
+  - id: 2
+    clip: {fileID: 8300000, guid: be4fd9015709bb445826c487434ba704, type: 3}
+  - id: 3
+    clip: {fileID: 8300000, guid: daaf4f25d79a208499150a0252bf193e, type: 3}
+  - id: 4
+    clip: {fileID: 8300000, guid: 8cae41145f1c7e3409f5d425888f7109, type: 3}
+  - id: 5
+    clip: {fileID: 8300000, guid: 7bd191bd112101544acada7fc7f1bad4, type: 3}

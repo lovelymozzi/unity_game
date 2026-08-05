@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 81a4c42671717d44e862d6a04eb447e5
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Resources/Items/Goldfish.asset
+  uploadId: 852870

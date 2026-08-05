@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be0e84aa065d8484fa8bb27e4b56737c, type: 3}
+  m_Name: Eggplant
+  m_EditorClassIdentifier: 
+  itemId: Eggplant
+  price: 7
+  icon: {fileID: 21300000, guid: e8e6931383fd95f4b98f70b1d8acc15d, type: 3}
+  drop: {fileID: 401342022886317764, guid: 64018c7051f7eda4f9a935013275e287, type: 3}
+  sproutPrefab: {fileID: 6532593750701787578, guid: 46f50bc5249ddb749b27c523f7c1cd88,
+    type: 3}
+  plantPrefab: {fileID: 7307562943508246909, guid: e560ad184d0a26b429f193f77b90d92f,
+    type: 3}

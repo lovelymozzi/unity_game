@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: d8ee84745f3b1e24fae1fcf0f64ca13e
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Scripts/UI/Silo/SiloInfo.cs
+  uploadId: 852870

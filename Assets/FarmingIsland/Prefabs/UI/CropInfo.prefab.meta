@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: f31db06763594b74986f5a6b5d452d89
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/UI/CropInfo.prefab
+  uploadId: 852870

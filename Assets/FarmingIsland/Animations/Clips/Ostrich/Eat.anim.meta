@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a0a6db3996451054a964c13931239f95
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Animations/Clips/Ostrich/Eat.anim
+  uploadId: 852870

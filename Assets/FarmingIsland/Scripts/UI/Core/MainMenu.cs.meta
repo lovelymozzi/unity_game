@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 3444c1cb833b3b6428e6c4b7c10cbc74
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Scripts/UI/Core/MainMenu.cs
+  uploadId: 852870

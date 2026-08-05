@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f3774e0adbb30ac44a10aa52d69f3178
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Animations/Controllers/Player.controller
+  uploadId: 852870

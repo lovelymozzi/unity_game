@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a1ead3706c832324dbe415bdf1357320
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Crops/Millet/Millet_Sprout.prefab
+  uploadId: 852870

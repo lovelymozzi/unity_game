@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 93b8348d8dcc4d64f8190d65d5ba1050
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Scripts/Inventories/ItemDatabase.cs
+  uploadId: 852870

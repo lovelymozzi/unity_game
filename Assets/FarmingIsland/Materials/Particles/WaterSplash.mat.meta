@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d7b2e365cd7f0e746a7eb0e7f981d234
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Materials/Particles/WaterSplash.mat
+  uploadId: 852870

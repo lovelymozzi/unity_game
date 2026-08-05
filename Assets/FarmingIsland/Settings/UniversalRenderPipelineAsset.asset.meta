@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6d6cfcbe2e9adc44183f297081e42d3e
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Settings/UniversalRenderPipelineAsset.asset
+  uploadId: 852870

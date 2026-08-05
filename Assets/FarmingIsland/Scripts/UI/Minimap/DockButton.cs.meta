@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 8fd996b3d6c23b04fa841bcc4ee6b049
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Scripts/UI/Minimap/DockButton.cs
+  uploadId: 852870

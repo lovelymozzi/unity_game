@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: d1fa3006aaea58a4b8a1aa57080ebd98
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Crops/Daikon/Daikon_Plant.prefab
+  uploadId: 852870

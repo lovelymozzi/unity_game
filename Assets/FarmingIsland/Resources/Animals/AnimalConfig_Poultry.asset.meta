@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4f5d145172539104b98030ea8920e979
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Resources/Animals/AnimalConfig_Poultry.asset
+  uploadId: 852870

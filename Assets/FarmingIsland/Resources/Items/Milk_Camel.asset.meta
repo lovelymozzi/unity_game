@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 5bc27d84d5a716d48b01e7968c73ba7a
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Resources/Items/Milk_Camel.asset
+  uploadId: 852870

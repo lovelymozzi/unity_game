@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 82733828b3c3602469f9d3e36e16540e
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Animals/Duck.prefab
+  uploadId: 852870

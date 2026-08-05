@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 3117f5f1d7c0b884ca58aee686943685
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Tools/WateringCan.prefab
+  uploadId: 852870

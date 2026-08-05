@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 5312ac7a4bf17f740b7b79cf4a53c7d2
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Tools/SeedBag.prefab
+  uploadId: 852870

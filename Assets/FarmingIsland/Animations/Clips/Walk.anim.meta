@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6d6e219af1c3451488fbf2787289798f
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Animations/Clips/Walk.anim
+  uploadId: 852870

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 58d2b2ce62b8b61479cdc4d3123bdb1a
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Crops/Carrot/Carrot_Plant.prefab
+  uploadId: 852870

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 5ad9b75e6bfdc4540a1906a86b2c2c6f
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Vehicles/Boat.prefab
+  uploadId: 852870

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: dc400608c2c24f14b811c8ceb84fe07b
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Animals/Fox.prefab
+  uploadId: 852870

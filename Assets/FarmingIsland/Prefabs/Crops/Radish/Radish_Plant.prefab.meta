@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: b377a3521e39e4d488eb56d1d08dd46b
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Crops/Radish/Radish_Plant.prefab
+  uploadId: 852870

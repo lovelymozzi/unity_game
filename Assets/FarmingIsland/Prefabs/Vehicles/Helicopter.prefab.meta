@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 16d75a08cc70b8d4c96fa4954be3ca2a
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Vehicles/Helicopter.prefab
+  uploadId: 852870

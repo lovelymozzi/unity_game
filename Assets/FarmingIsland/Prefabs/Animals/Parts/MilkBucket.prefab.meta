@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 9f84032d3f0174c498738a1b8640783c
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Animals/Parts/MilkBucket.prefab
+  uploadId: 852870

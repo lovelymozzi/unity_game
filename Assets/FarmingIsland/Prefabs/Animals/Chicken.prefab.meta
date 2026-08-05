@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 1baa0113ec90d374f8f614a6f468edfb
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Animals/Chicken.prefab
+  uploadId: 852870

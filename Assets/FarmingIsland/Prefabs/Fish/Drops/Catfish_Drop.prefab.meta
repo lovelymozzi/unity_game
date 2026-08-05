@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 3c6cb109650fdc7448af8a750f2bc719
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Fish/Drops/Catfish_Drop.prefab
+  uploadId: 852870

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be0e84aa065d8484fa8bb27e4b56737c, type: 3}
+  m_Name: Aloe
+  m_EditorClassIdentifier: 
+  itemId: Aloe
+  price: 12
+  icon: {fileID: 21300000, guid: 2a7c3fe67a7f2974d9d6ed9ed4443e9c, type: 3}
+  drop: {fileID: 1271767450427285305, guid: 6d1a8468c19bd17418345f6218bf3fbe, type: 3}
+  sproutPrefab: {fileID: 5838231100702463167, guid: 730408b6a36c8b64ab0efc96c220059a,
+    type: 3}
+  plantPrefab: {fileID: 8254581480756573545, guid: 303f49bd5f941f04f88fd8fabac3dda9,
+    type: 3}

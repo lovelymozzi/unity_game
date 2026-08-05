@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: c3e73f98116d6cc4a93067deafc9ee3e
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Crops/Carrot/Carrot_Sprout.prefab
+  uploadId: 852870

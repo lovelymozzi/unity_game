@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8b9c3fe585ec43742a0e29e3b3c82f6b
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Materials/Islands/Island01.mat
+  uploadId: 852870

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 40f60093d8ebb1044b6c3c9a93b2ab57
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Tools/Parts/Bobber.prefab
+  uploadId: 852870

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 0a675e856a276c049883b8174b5f0f9e
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Crops/Corn/Corn_Plant.prefab
+  uploadId: 852870

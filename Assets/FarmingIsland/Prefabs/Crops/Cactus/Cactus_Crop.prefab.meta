@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: e501d4d71cf5aed428d7b04e7654f633
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Crops/Cactus/Cactus_Crop.prefab
+  uploadId: 852870

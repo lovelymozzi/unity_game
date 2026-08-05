@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: c01071d08ce68c440906e87131606648
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Crops/Millet/Millet_Crop.prefab
+  uploadId: 852870

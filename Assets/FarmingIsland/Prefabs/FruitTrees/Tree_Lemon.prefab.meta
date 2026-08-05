@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 74267b5cbfd54f445abd673ac2822234
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/FruitTrees/Tree_Lemon.prefab
+  uploadId: 852870

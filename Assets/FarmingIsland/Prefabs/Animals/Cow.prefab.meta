@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 49d3424c7a81fa2429771fc976bfe458
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Animals/Cow.prefab
+  uploadId: 852870

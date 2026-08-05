@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: da029bde2be339f4a8e7c616881d211e
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Tools/FarmScythe.prefab
+  uploadId: 852870

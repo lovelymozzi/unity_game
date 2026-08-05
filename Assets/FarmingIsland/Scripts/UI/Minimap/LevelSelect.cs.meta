@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 27cc4f1a71a996d4cb7db9508bbf0099
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Scripts/UI/Minimap/LevelSelect.cs
+  uploadId: 852870

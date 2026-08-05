@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: f52cdd3ed297c1d4cbf0b344965a7f52
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Animals/Parts/Udder.prefab
+  uploadId: 852870

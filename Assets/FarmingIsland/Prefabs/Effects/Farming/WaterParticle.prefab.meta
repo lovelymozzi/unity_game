@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 0445700985aabd14ebc2d159b0c84927
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Effects/Farming/WaterParticle.prefab
+  uploadId: 852870

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 274b3101cfff07743bceefd8810d2928
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Animations/Clips/Planting.anim
+  uploadId: 852870

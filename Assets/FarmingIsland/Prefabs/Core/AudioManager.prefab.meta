@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 1b7ef2814e5a2294084676651d5dbf0d
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Core/AudioManager.prefab
+  uploadId: 852870

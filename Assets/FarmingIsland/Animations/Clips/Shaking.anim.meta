@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a8fecc8171cf71e48beeedb174569513
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Animations/Clips/Shaking.anim
+  uploadId: 852870

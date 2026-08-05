@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 7cf5a2c1ad8dc6c4c81da5cb4e2eb3c1
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Fish/Drops/Clownfish_Drop.prefab
+  uploadId: 852870

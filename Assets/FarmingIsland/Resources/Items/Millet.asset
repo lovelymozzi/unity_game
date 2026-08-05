@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be0e84aa065d8484fa8bb27e4b56737c, type: 3}
+  m_Name: Millet
+  m_EditorClassIdentifier: 
+  itemId: Millet
+  price: 11
+  icon: {fileID: 21300000, guid: 5c37346786eb2be47a305628c4d6fd2e, type: 3}
+  drop: {fileID: 3389058176752630885, guid: c01071d08ce68c440906e87131606648, type: 3}
+  sproutPrefab: {fileID: 2315954103107551121, guid: a1ead3706c832324dbe415bdf1357320,
+    type: 3}
+  plantPrefab: {fileID: 3244478075968156674, guid: 3ccf30f1c2e5d8d498983ddd7d3ef316,
+    type: 3}

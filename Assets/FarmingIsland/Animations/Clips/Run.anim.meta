@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8501f2d0ae6877e4c8de24cd8acf8393
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Animations/Clips/Run.anim
+  uploadId: 852870

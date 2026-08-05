@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: f60784c6c63708d40b526606e0fd90be
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/FruitTrees/Tree_Orange.prefab
+  uploadId: 852870

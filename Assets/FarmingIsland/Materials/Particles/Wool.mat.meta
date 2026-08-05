@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4727810e5e314b84ab0df79e7cd1c316
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Materials/Particles/Wool.mat
+  uploadId: 852870

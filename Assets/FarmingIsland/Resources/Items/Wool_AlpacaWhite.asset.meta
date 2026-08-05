@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 261d09863458fc84b9296aaa381e661f
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Resources/Items/Wool_AlpacaWhite.asset
+  uploadId: 852870

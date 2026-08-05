@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: f25700abc77d3114b94a2e80dce3b60e
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Animals/Ostrich.prefab
+  uploadId: 852870

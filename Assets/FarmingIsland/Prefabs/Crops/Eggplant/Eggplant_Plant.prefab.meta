@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: e560ad184d0a26b429f193f77b90d92f
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Crops/Eggplant/Eggplant_Plant.prefab
+  uploadId: 852870

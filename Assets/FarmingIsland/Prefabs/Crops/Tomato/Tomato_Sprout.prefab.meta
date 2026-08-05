@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 540e2a90ba4990b4d8f8e241143ad14b
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Crops/Tomato/Tomato_Sprout.prefab
+  uploadId: 852870

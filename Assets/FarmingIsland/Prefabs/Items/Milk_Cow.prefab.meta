@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: fedd014f9f6c77b4f8a57c6696550be9
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Items/Milk_Cow.prefab
+  uploadId: 852870

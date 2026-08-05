@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 677d9607a031217409cd2fb94a4156d0
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/UI/AnimalUpgradeSlot.prefab
+  uploadId: 852870

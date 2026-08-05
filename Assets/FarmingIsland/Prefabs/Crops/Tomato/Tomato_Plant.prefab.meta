@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 8c54d997fecfcdb4db10350859e5447d
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Crops/Tomato/Tomato_Plant.prefab
+  uploadId: 852870

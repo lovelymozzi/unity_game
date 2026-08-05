@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 4f881d6d8cf8da5418a8528f9b3fd152
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/FruitTrees/Tree_Plum.prefab
+  uploadId: 852870

@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/FarmingIsland/Scenes/_MainMenu.unity
+    guid: c4c87ba90ac771c4b84fb3661a88d4a6
+  - enabled: 1
+    path: Assets/FarmingIsland/Scenes/Level01.unity
+    guid: af1ea6b81e110d441938c5db152ca166
+  - enabled: 1
+    path: Assets/FarmingIsland/Scenes/Level02.unity
+    guid: 5bb32e6d09d8c464998428c851edc3d8
+  - enabled: 1
+    path: Assets/FarmingIsland/Scenes/Level03.unity
+    guid: 21cc8c2d1d20c7b4aa69f4b146501459
+  m_configObjects: {}

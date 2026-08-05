@@ -1,0 +1,30 @@
+Version 1.2.0
+Changes:
+- Updated minimum required Unity version to 2022.3.62f3 LTS to address a security issue (CVE-2025-59489).
+- Optimized island management logic by implementing spatial grid lookups and incremental updates, eliminating CPU spikes during island expansion in large maps.
+- Extracted configuration logic from SettingsWindow into AudioManager and a new GraphicsManager.
+- Improved ProductInfo visibility handling to hide UI when animals are behind the camera or outside the screen bounds.
+- Migrated animal configuration to a data-driven architecture, centralizing production and upgrade logic within the Barn to decouple data from the Animal and UI layers.
+- Reorganized project scripts into a clearer, scalable folder structure.
+
+Version 1.1.0
+Changes:
+- Restricted the joystick area to the bottom half of the screen, allowing movement only within this region.
+
+New Features:
+- Added a settings window with options to toggle SFX, BGM, vibration, shadows, and adjust render scale.
+
+Version 1.0.2
+Changes:
+- Upgraded NavMeshComponents to use Unity's AI Navigation system, increasing the Unity version requirement to 2022.3.53f1.
+- Changed haptic feedback using Unity's Handheld.Vibrate, fixing gameplay issues on some Android devices (e.g., shaking tree, fishing, collecting eggs).
+- Added Save File Manager in Unity Editor (Tools > Farming Island > Save File Manager).
+- Minor performance improvements.
+
+Version 1.0.1
+Bug Fixes:
+- Resolved script errors related to NavMeshComponents caused by the transition to Unity AI Navigation system in Unity 6.
+- Adjusted Universal Render Pipeline (URP) asset settings to fix water shader rendering issues on Apple's Metal platform (Mac/iOS).
+
+Version 1.0.0
+First release

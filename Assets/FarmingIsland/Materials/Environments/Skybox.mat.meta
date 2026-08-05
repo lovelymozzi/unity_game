@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d1fd914bf19f0974f94b228b25a5782d
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Materials/Environments/Skybox.mat
+  uploadId: 852870

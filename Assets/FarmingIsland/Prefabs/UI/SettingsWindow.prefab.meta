@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 0d20f029baca6814a898487482b6b1cb
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/UI/SettingsWindow.prefab
+  uploadId: 852870

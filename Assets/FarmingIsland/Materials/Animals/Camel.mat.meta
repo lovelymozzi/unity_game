@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 1024280296fa8a0409bb28ea3f6197d8
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Materials/Animals/Camel.mat
+  uploadId: 852870

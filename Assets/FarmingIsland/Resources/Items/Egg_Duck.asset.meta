@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4e17eae3478ab2d45aec137638a5ca08
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Resources/Items/Egg_Duck.asset
+  uploadId: 852870

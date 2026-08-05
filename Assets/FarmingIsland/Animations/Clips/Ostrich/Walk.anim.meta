@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 950b4ac4fda184f438b2819f29057f62
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Animations/Clips/Ostrich/Walk.anim
+  uploadId: 852870

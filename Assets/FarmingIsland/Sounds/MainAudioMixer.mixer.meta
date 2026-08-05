@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4685000daaf8f14478699e589b15b0ac
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 24100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Sounds/MainAudioMixer.mixer
+  uploadId: 852870

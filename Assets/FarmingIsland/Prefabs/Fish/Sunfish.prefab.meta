@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: d8e9fa79a401f9246b2aab957b52c362
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Fish/Sunfish.prefab
+  uploadId: 852870

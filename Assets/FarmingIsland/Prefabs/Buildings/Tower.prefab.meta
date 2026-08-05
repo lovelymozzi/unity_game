@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 30f94ad992fe1334fa311c6b10df123e
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Buildings/Tower.prefab
+  uploadId: 852870

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: ab0691ccdf2c7a84a83fea3febc7829d
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Effects/Farming/SeedsParticle.prefab
+  uploadId: 852870

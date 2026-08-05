@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: e0a2e1a74b68fa642a73ee303b2225fb
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Crops/Daikon/Daikon_Sprout.prefab
+  uploadId: 852870

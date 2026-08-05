@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: d33b2cbb90396a04880ce80171d3fc43
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 295699
+  packageName: Farming Island - Hyper Casual Farming Simulator
+  packageVersion: 1.2.0
+  assetPath: Assets/FarmingIsland/Prefabs/Characters/Merchant.prefab
+  uploadId: 852870
