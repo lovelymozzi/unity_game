@@ -1,0 +1,28 @@
+{
+    "asset": "999febeeb4e37934b8f3d40023aed303",
+    "fileName": "019fd0cb-0bf5-703b-961e-3ddb05f216ba.png",
+    "prompt": "Use case: stylized-concept. Asset type: circular level-select icon for a Unity casual farming game. Isometric floating square farm island, polished friendly low-poly mobile game style, centered composition, crisp at small size, no text, no numbers, no UI frame, no watermark. Background must be perfectly flat #ff00ff chroma-key with no gradients or shadows; do not use magenta in the island. Theme: warm autumn harvest farm, orange-red decididuous trees, pumpkin patch, small wooden fence, golden hay bales, cozy late-afternoon light.",
+    "negativePrompt": "",
+    "model": "game-ui-essentials-2",
+    "modelName": "Game UI Essentials 2.0",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": []
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 1024,
+        "height": 1024
+    },
+    "spriteSheet": false,
+    "duration": 0.0
+}

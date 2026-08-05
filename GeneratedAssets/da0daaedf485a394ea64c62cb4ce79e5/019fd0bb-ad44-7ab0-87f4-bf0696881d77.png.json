@@ -1,0 +1,28 @@
+{
+    "asset": "da0daaedf485a394ea64c62cb4ce79e5",
+    "fileName": "019fd0bb-ad44-7ab0-87f4-bf0696881d77.png",
+    "prompt": "Use case: ui-mockup. Asset type: Unity casual farming game map button sprite. Create one polished folded map icon, centered and filling most of a square canvas. The folded three-panel map has mint-green land, a curved sky-blue river, and a warm yellow walking path. Add a small cheerful coral-red location pin near the upper center. Style: premium casual mobile game UI, soft 3D clay-like shading, clean deep teal outline, subtle lower-right shadow, bright friendly colors, crisp silhouette readable at 64px. Constraints: isolated single icon, no text, no letters, no UI button background, no border frame, no scenery, no watermark. Background must be perfectly flat solid #ff00ff chroma-key with no gradient, shadow, reflection, or texture; do not use magenta in the icon.",
+    "negativePrompt": "",
+    "model": "game-ui-essentials-2",
+    "modelName": "Game UI Essentials 2.0",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": []
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 1024,
+        "height": 1024
+    },
+    "spriteSheet": false,
+    "duration": 0.0
+}
