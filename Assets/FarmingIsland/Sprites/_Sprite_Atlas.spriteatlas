@@ -54,7 +54,7 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 77a5e313d2c9581458b2f96c7ab59a17, type: 3}
     - {fileID: 2800000, guid: ad3ca33ac6ddb404f9ea8e1debfb069d, type: 3}
     - {fileID: 2800000, guid: f7db7a3bf047f5441bd131505a715513, type: 3}
-    - {fileID: 2800000, guid: 23c785b7e7a2c6c4fbb12ae3c4cc0e00, type: 3}
+    - {fileID: 2800000, guid: da0daaedf485a394ea64c62cb4ce79e5, type: 3}
     - {fileID: 2800000, guid: 52bbd44842ec7fd4297e8a7647b268f4, type: 3}
     - {fileID: 2800000, guid: 1528a968e2a89dd4c81d0fc03f0c8cff, type: 3}
     - {fileID: 2800000, guid: 147ffb5c114ba3846b110547264500c4, type: 3}
@@ -120,7 +120,6 @@ SpriteAtlas:
     - 2a7c3fe67a7f2974d9d6ed9ed4443e9c: 21300000
     - 5c37346786eb2be47a305628c4d6fd2e: 21300000
     - ba04cba7406f5154b838fa83b2c0a510: 21300000
-    - 23c785b7e7a2c6c4fbb12ae3c4cc0e00: 21300000
     - 8ab211c7515d92147807064aad2e739a: 21300000
     - a671e1181e4c77f418a454c21b9b82f7: 21300000
     - 52bbd44842ec7fd4297e8a7647b268f4: 21300000
@@ -149,6 +148,7 @@ SpriteAtlas:
     - 5fe1b5ad016cb4f4fa9ab1813a2b6704: 21300000
     - 53d7d3cd9cd3fee4b8712242597e1c5e: 21300000
     - 7e3ad6cd340ed6e46b86a8a15326daec: 21300000
+    - da0daaedf485a394ea64c62cb4ce79e5: 21300000
     - cfded01e2e90e6a4a9f9175de91ca430: 21300000
     - 133af7fed39295543abbcc974a27a096: 21300000
     - cbcd852ffed4869479967de8a21fb370: 21300000
@@ -181,7 +181,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 2a7c3fe67a7f2974d9d6ed9ed4443e9c, type: 3}
   - {fileID: 21300000, guid: 5c37346786eb2be47a305628c4d6fd2e, type: 3}
   - {fileID: 21300000, guid: ba04cba7406f5154b838fa83b2c0a510, type: 3}
-  - {fileID: 21300000, guid: 23c785b7e7a2c6c4fbb12ae3c4cc0e00, type: 3}
   - {fileID: 21300000, guid: 8ab211c7515d92147807064aad2e739a, type: 3}
   - {fileID: 21300000, guid: a671e1181e4c77f418a454c21b9b82f7, type: 3}
   - {fileID: 21300000, guid: 52bbd44842ec7fd4297e8a7647b268f4, type: 3}
@@ -210,6 +209,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 5fe1b5ad016cb4f4fa9ab1813a2b6704, type: 3}
   - {fileID: 21300000, guid: 53d7d3cd9cd3fee4b8712242597e1c5e, type: 3}
   - {fileID: 21300000, guid: 7e3ad6cd340ed6e46b86a8a15326daec, type: 3}
+  - {fileID: 21300000, guid: da0daaedf485a394ea64c62cb4ce79e5, type: 3}
   - {fileID: 21300000, guid: cfded01e2e90e6a4a9f9175de91ca430, type: 3}
   - {fileID: 21300000, guid: 133af7fed39295543abbcc974a27a096, type: 3}
   - {fileID: 21300000, guid: cbcd852ffed4869479967de8a21fb370, type: 3}
@@ -241,7 +241,6 @@ SpriteAtlas:
   - Aloe
   - Millet
   - Egg_Duck
-  - Icon_Map
   - Location8_Tower
   - Milk_Camel
   - Location1_Farm
@@ -270,6 +269,7 @@ SpriteAtlas:
   - Location7_Dock
   - Icon_Level01
   - Wool_Fox
+  - Icon_Map 1
   - Portrait_Cow
   - Radish
   - Silo
